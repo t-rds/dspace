@@ -7,17 +7,17 @@
 ## {4}  Task result
 ## {5}  Workflow action taken
 ##
-#set($subject = "${config.get('dspace.name')}: Curation Task Report")
+#set($subject = "${config.get('dspace.name')}: Relatório de Tarefa de Curadoria")
 
-Title:         ${params[0]}
-Collection:    ${params[1]}
-Submitted by:  ${params[2]}
+Título:       ${params[0]}
+Coleção:      ${params[1]}
+Enviado por:  ${params[2]}
 
-Curation task ${params[3]} has been performed
-with the following result:
+A tarefa de curadoria ${params[3]} foi realizada
+com o seguinte resultado:
 
 ${params[4]}
 
-Action taken on the submission: ${params[5]}
+Ação realizada na submissão: ${params[5]}
 
-The ${config.get('dspace.name')} Team
+Equipe ${config.get('dspace.name')}

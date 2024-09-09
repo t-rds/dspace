@@ -6,17 +6,17 @@
 ## {3}  Reason for the rejection
 ## {4}  Link to 'My DSpace' page
 ##
-#set($subject = "${config.get('dspace.name')}: Submission Rejected")
+#set($subject = "${config.get('dspace.name')}: Submissão Rejeitada")
 
-You submitted: ${params[0]}
+Você submeteu: ${params[0]}
 
-To collection: ${params[1]}
+Para a coleção: ${params[1]}
 
-Your submission has been rejected by ${params[2]}
-with the following explanation:
+Sua submissão foi rejeitada por ${params[2]}  
+com a seguinte explicação:
 
 ${params[3]}
 
-Your submission has not been deleted. You can access it from your "My${config.get('dspace.shortname')}" page: ${params[4]}
+Sua submissão não foi deletada. Você pode acessá-la na sua página "Meu${config.get('dspace.shortname')}": ${params[4]}
 
-The ${config.get('dspace.name')} Team
+Equipe ${config.get('dspace.name')}

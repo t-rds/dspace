@@ -4,10 +4,10 @@
 ##             {1} resource id
 ##             {2} reason
 ##
-#set($subject = "Notification about ${params[0]} Request")
+#set($subject = "Notificação sobre o pedido ${params[0]}")
 
-Item Details:
+Detalhes do item:
 
-Type of request: ${params[0]}
-Relatem to item: ${params[1]}
-Reason: ${params[2]}
+Tipo de pedido: ${params[0]}
+Relacionado ao item: ${params[1]}
+Motivo: ${params[2]}

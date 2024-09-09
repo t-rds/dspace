@@ -6,19 +6,18 @@
 ## {3}  Description of task
 ## {4}  link to 'my DSpace' page
 ##
-#set($subject = "${config.get('dspace.name')}: You have a new task")
+#set($subject = "${config.get('dspace.name')}: Você tem uma nova tarefa")
 
-A new item has been submitted:
+Um novo item foi submetido:
 
-Title:        ${params[0]}
-Collection:   ${params[1]}
-Submitted by: ${params[2]}
+Título:        ${params[0]}  
+Coleção:       ${params[1]}  
+Submetido por: ${params[2]}
 
 ${params[3]}
 
-To claim this task, please visit your "My${config.get('dspace.shortname')}"
-page:  ${params[4]}
+Para assumir esta tarefa, por favor visite sua página "Meu${config.get('dspace.shortname')}": ${params[4]}
 
-Many thanks!
+Muito obrigado!
 
-The ${config.get('dspace.name')} Team
+Equipe ${config.get('dspace.name')}

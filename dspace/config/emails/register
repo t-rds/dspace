@@ -4,15 +4,16 @@
 ##
 ## See org.dspace.core.Email for information on the format of this file.
 ##
-#set($subject = "${config.get('dspace.name')} Account Registration")
+#set($subject = "Cadastro na conta ${config.get('dspace.name')}")
 #set($phone = ${config.get('mail.message.helpdesk.telephone')})
-To complete registration for a ${config.get('dspace.name')} account, please click the link below:
+
+Para concluir o cadastro para a sua conta ${config.get('dspace.name')}, clique no link abaixo:
 
   ${params[0]}
 
-If you need assistance with your account, please email ${config.get("mail.helpdesk")}
+Caso precise de ajuda com a sua conta, envie um e-mail para ${config.get("mail.helpdesk")}
 #if( $phone )
-or call us at ${phone}.
+ou ligue para ${phone}.
 #end
 
-The ${config.get('dspace.name')} Team
+Equipe ${config.get('dspace.name')}

@@ -2,17 +2,18 @@
 ##
 ## Parameters: {0} Collections updates
 ##             {1} Communities updates
-#set($subject = "${config.get('dspace.name')} Subscriptions")
-This email is sent from ${config.get('dspace.name')} based on the chosen subscription preferences.
+#set($subject = "Assinaturas ${config.get('dspace.name')}")
+
+Este e-mail foi enviado a partir de ${config.get('dspace.name')} com base nas preferências de assinatura escolhidas.
 
 #if( not( "$params[0]" == "" ))
-Community Subscriptions:
-------------------------
-List of changed items : ${params[0]}
+Assinaturas de Comunidades:
+---------------------------
+Lista de itens alterados: ${params[0]}
 
 #end
 #if( not( "$params[1]" == "" ))
-Collection Subscriptions:
--------------------------
-List of changed items : ${params[1]}
+Assinaturas de Coleções:
+------------------------
+Lista de itens alterados: ${params[1]}
 #end
