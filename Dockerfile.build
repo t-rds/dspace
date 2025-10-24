@@ -7,15 +7,18 @@ RUN mvn -B clean package -DskipTests
 FROM openjdk:17-jdk-slim
 ENV DSPACE_HOME=/dspace
 
-# Instala dependências básicas
 RUN apt-get update && apt-get install -y ant postgresql-client && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /dspace-src
 COPY --from=build /src/dspace/target/dspace-installer /installer
 
-RUN mkdir -p ${DSPACE_HOME} && cd /installer && ant fresh_install
+# Copia o script de inicialização
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+RUN mkdir -p ${DSPACE_HOME}
 
 EXPOSE 8080
 WORKDIR ${DSPACE_HOME}
 
-CMD ["bin/dspace", "run"]
+ENTRYPOINT ["/entrypoint.sh"]
