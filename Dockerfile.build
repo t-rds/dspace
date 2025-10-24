@@ -1,0 +1,21 @@
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /src
+
+COPY . .
+RUN mvn -B clean package -DskipTests
+
+FROM openjdk:17-jdk-slim
+ENV DSPACE_HOME=/dspace
+
+# Instala dependências básicas
+RUN apt-get update && apt-get install -y ant postgresql-client && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /dspace-src
+COPY --from=build /src/dspace/target/dspace-installer /installer
+
+RUN mkdir -p ${DSPACE_HOME} && cd /installer && ant fresh_install
+
+EXPOSE 8080
+WORKDIR ${DSPACE_HOME}
+
+CMD ["bin/dspace", "run"]
