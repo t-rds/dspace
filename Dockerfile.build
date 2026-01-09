@@ -11,13 +11,15 @@ RUN useradd -m dspace && \
 USER dspace
 
 # Copia o código do DSpace
-ADD --chown=dspace:dspace . /app/
+COPY --chown=dspace:dspace . /app/
 
 ENV MAVEN_FLAGS="-P-test-environment -Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true"
+
 RUN mvn --no-transfer-progress package ${MAVEN_FLAGS} && \
-  mv /app/dspace/target/${TARGET_DIR}/* /install && \
-  mvn clean
-# Remove the server webapp to keep image small.
+    mv /app/dspace/target/${TARGET_DIR}/* /install && \
+    mvn clean
+
+# Remove webapp antigo para reduzir imagem
 RUN rm -rf /install/webapps/server/
 
 
@@ -27,8 +29,7 @@ RUN rm -rf /install/webapps/server/
 FROM eclipse-temurin:17-jdk-jammy AS ant_build
 
 ENV DSPACE_HOME=/dspace \
-    DSPACE_SRC=/dspace-src \
-    JAVA_OPTS="-Xmx2g"
+    DSPACE_SRC=/dspace-src
 
 RUN apt-get update && \
     apt-get install -y ant && \
@@ -41,26 +42,24 @@ RUN ant init_installation update_configs update_code update_webapps
 
 
 # ===============================
-# 🚀 Etapa 3 - Execução (Imagem final)
+# 🚀 Etapa 3 - Runtime
 # ===============================
 FROM eclipse-temurin:17-jdk-jammy
 
 ENV DSPACE_INSTALL=/dspace
-WORKDIR $DSPACE_INSTALL
+WORKDIR /dspace
 
-# Copia a instalação pronta
+# Copia instalação pronta
 COPY --from=ant_build /dspace /dspace
 
-# Expor portas
 EXPOSE 8080
 
-# Metadados da imagem
-LABEL org.opencontainers.image.version="9.2" \
-      org.opencontainers.image.title="DSpace 9.2 Backend URI" \
+LABEL org.opencontainers.image.version="9.3" \
+      org.opencontainers.image.title="DSpace 9.3 Backend URI" \
       org.opencontainers.image.vendor="URI - Universidade Regional Integrada"
 
-# Give java extra memory (2GB)
+# Memória Java (ajustável via env no Swarm)
 ENV JAVA_OPTS="-Xmx2g -Xms1g -XX:MaxMetaspaceSize=512m"
 
-# On startup, run DSpace Runnable JAR
-ENTRYPOINT java $JAVA_OPTS -jar webapps/server-boot.jar --dspace.dir=$DSPACE_INSTALL
+ENTRYPOINT ["java"]
+CMD ["-jar", "webapps/server-boot.jar", "--dspace.dir=/dspace"]
