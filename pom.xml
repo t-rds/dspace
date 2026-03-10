@@ -19,28 +19,29 @@
     <properties>
         <!--=== GENERAL / DSPACE-API DEPENDENCIES ===-->
         <java.version>17</java.version>
-        <spring.version>6.2.14</spring.version>
-        <spring-boot.version>3.5.8</spring-boot.version>
-        <spring-security.version>6.5.7</spring-security.version> <!-- sync with version used by spring-boot-->
+        <spring.version>6.2.16</spring.version>
+        <spring-ldap.version>3.3.6</spring-ldap.version>
+        <spring-boot.version>3.5.11</spring-boot.version>
+        <spring-security.version>6.5.8</spring-security.version> <!-- sync with version used by spring-boot-->
         <hibernate.version>6.4.10.Final</hibernate.version>
         <hibernate-validator.version>8.0.3.Final</hibernate-validator.version>
-        <postgresql.driver.version>42.7.8</postgresql.driver.version>
+        <postgresql.driver.version>42.7.10</postgresql.driver.version>
         <flyway.version>10.22.0</flyway.version>
         <solr.client.version>8.11.4</solr.client.version>
 
         <ehcache.version>3.11.1</ehcache.version>
         <errorprone.version>2.42.0</errorprone.version>
         <!-- NOTE: when updating jackson.version, also sync jackson-annotations.version below -->
-        <jackson.version>2.20.1</jackson.version>
-        <jackson-annotations.version>2.20</jackson-annotations.version>
+        <jackson.version>2.21.1</jackson.version>
+        <jackson-annotations.version>2.21</jackson-annotations.version>
         <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
-        <jaxb-api.version>4.0.4</jaxb-api.version>
+        <jaxb-api.version>4.0.5</jaxb-api.version>
         <jaxb-runtime.version>4.0.6</jaxb-runtime.version>
         <jcache-version>1.1.1</jcache-version>
         <!-- NOTE: Jetty needed for Solr, Handle Server & tests -->
         <jetty.version>9.4.58.v20250814</jetty.version>
-        <log4j.version>2.25.2</log4j.version>
-        <pdfbox-version>3.0.5</pdfbox-version>
+        <log4j.version>2.25.3</log4j.version>
+        <pdfbox-version>3.0.6</pdfbox-version>
         <rome.version>1.19.0</rome.version>
         <!-- SLF4J is not used, but specified for dependency convergence issues between many dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
@@ -139,13 +140,24 @@
                                 </rules>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>enforce-plugin-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requirePluginVersions />
+                                </rules>
+                            </configuration>
+                        </execution>
                     </executions>
                 </plugin>
                 <!-- Used to compile all Java classes -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.1</version>
+                    <version>3.15.0</version>
                     <configuration>
                         <release>${java.version}</release>
                         <!-- Turn on http://errorprone.info (requires fork=true & below compilerArgs)-->
@@ -213,7 +225,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.4</version>
+                    <version>3.5.5</version>
                     <configuration>
                         <!-- Allow for the ability to pass JVM memory flags for Unit Tests. Since
                              maven-surefire-plugin forks a new JVM, it ignores MAVEN_OPTS.-->
@@ -240,7 +252,7 @@
                 <!-- Used to run Integration tests (when enabled by -DskipIntegrationTests=false) -->
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.5.4</version>
+                    <version>3.5.5</version>
                     <configuration>
                         <!-- Allow for the ability to pass JVM memory flags for Unit Tests. Since
                              maven-failsafe-plugin forks a new JVM, it ignores MAVEN_OPTS.-->
@@ -353,7 +365,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.9.0</version>
+                    <version>3.10.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -370,7 +382,7 @@
                 <plugin>
                     <groupId>org.sonatype.central</groupId>
                     <artifactId>central-publishing-maven-plugin</artifactId>
-                    <version>0.9.0</version>
+                    <version>0.10.0</version>
                 </plugin>
                 <!-- Used to generate JavaDocs for new releases (see release profile). -->
                 <plugin>
@@ -412,6 +424,22 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.14</version>
                 </plugin>
+                <!-- Freeze versions of the remaining compiler plugins for reproducible builds -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.21.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -422,7 +450,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <!-- During release:prepare and release:perform, pass the "release" property to enable the
                      "release" profile (and enable/disable other profiles based on whether they need releasing) -->
@@ -451,8 +479,6 @@
                     <!-- Add some default DSpace exclusions not covered by <useDefaultExcludes>
                          Individual Maven projects may choose to override these defaults. -->
                     <excludes>
-						<!-- temporary copy of a modified apache commons-configuration2 class, see https://issues.apache.org/jira/browse/CONFIGURATION-846 -->
-                        <exclude>**/src/main/java/org/dspace/servicemanager/config/DSpaceConfigurationPropertySource.java</exclude>
                         <exclude>**/src/test/resources/**</exclude>
                         <exclude>**/src/test/data/**</exclude>
                         <exclude>**/src/main/license/**</exclude>
@@ -490,7 +516,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <executions>
                     <execution>
                         <id>validate-ALL-xml-and-xsl</id>
@@ -698,7 +724,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>license-maven-plugin</artifactId>
-                        <version>2.7.0</version>
+                        <version>2.7.1</version>
                         <!-- This plugin only needs to be run on the Parent POM
                              as it aggregates results from all child POMs. -->
                         <inherited>false</inherited>
@@ -1150,11 +1176,21 @@
                 <version>${hibernate-validator.version}</version>
             </dependency>
 
-            <!-- Hibernate introduces multiple versions of jboss-logging. So, specify version we want -->
+            <!-- Different Hibernate components introduce different (conflicting)
+                 versions of jboss-logging. We specify it here to avoid dependency
+                 convergence issues, and the version here is pinned to the version
+                 used by the hibernate-orm parent.
+
+                 See: https://github.com/hibernate/hibernate-orm/blob/6.4/settings.gradle#L74
+
+                 Dependabot is configured to ignore updates for jboss-logging.
+
+                 See: .github/dependabot.yml
+            -->
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
-                <version>3.6.1.Final</version>
+                <version>3.5.0.Final</version>
             </dependency>
 
             <!-- Hibernate & Solr disagree on the version of antlr. So, specify the latest version -->
@@ -1185,13 +1221,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
-                <exclusions>
-                    <!-- Spring JCL is unnecessary and conflicts with commons-logging when both are on classpath -->
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-jcl</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- Explicitly Specify Latest Version of Spring -->
@@ -1199,6 +1228,14 @@
                 <artifactId>spring-core</artifactId>
                 <groupId>org.springframework</groupId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <!-- Spring JCL is unnecessary and conflicts with commons-logging when both are on classpath.
+                         NOTE: When Spring JCL is on the classpath, this results in Handle Server issues. -->
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -1223,6 +1260,23 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.ldap</groupId>
+                <artifactId>spring-ldap-core</artifactId>
+                <version>${spring-ldap.version}</version>
+	    </dependency>
+            <!-- Specify the version of micrometer to use. Solves dependency convergence issues in spring-ldap-core -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>1.14.14</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-observation</artifactId>
+                <version>1.14.14</version>
             </dependency>
 
             <dependency>
@@ -1383,7 +1437,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.52.0</version>
+                <version>3.53.1</version>
             </dependency>
 
             <!-- Several dependencies disagree on version of GSON including Jena, Google-OAuth-Client
@@ -1511,7 +1565,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.20.0</version>
+                <version>1.21.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -1526,7 +1580,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-dbcp2</artifactId>
-                <version>2.13.0</version>
+                <version>2.14.0</version>
                 <exclusions>
                     <!-- Newer version is pulled in by Hibernate -->
                     <exclusion>
@@ -1565,12 +1619,12 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
-                <version>2.12.1</version>
+                <version>2.13.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
-                <version>1.14.0</version>
+                <version>1.15.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-validator</groupId>
