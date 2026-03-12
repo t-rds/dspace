@@ -58,7 +58,7 @@ LABEL org.opencontainers.image.version="9.3" \
       org.opencontainers.image.title="DSpace 9.3 Backend URI" \
       org.opencontainers.image.vendor="URI - Universidade Regional Integrada"
 
-ENV JAVA_OPTS="-Xmx4g -Xms2g -XX:MaxMetaspaceSize=512m"
+ENV JAVA_OPTS="-Xmx2g -Xms1g -XX:MaxMetaspaceSize=512m"
 
 ENTRYPOINT ["java"]
-CMD ["-jar", "webapps/server-boot.jar", "--dspace.dir=/dspace"]
+CMD ["-jar", "webapps/server-boot.jar"]
