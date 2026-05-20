@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node id="cnpq" label="CNPq">
+    <!-- 30/05/2025 -->
     <isComposedBy>
         <node label="CIENCIAS EXATAS E DA TERRA" id="10000003">
             <isComposedBy>
