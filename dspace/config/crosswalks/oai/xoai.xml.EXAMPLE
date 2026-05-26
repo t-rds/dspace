@@ -21,7 +21,6 @@
             <Format ref="uketd_dc"/>
             <Format ref="rioxx"/>
             <!--<Format ref="junii2" />-->
-            <Format ref="oaicapes"/>
             <Description>
                 This is the default context of the DSpace OAI-PMH data provider.
             </Description>
@@ -213,12 +212,6 @@
             <Namespace>http://www.rioxx.net/schema/v3.0/rioxx/</Namespace>
             <SchemaLocation>http://www.rioxx.net/schema/v3.0/rioxx/ http://www.rioxx.net/schema/v3.0/rioxx/rioxx.xsd</SchemaLocation>
             <Filter ref="rioxxFilter"/>
-        </Format>
-        <Format id="oaicapes">
-            <Prefix>oai_capes</Prefix>
-            <XSLT>metadataFormats/oai_capes.xsl</XSLT>
-            <Namespace>http://capes.gov.br/schema/oai_capes/1.0</Namespace>
-            <SchemaLocation>http://capes.gov.br/schema/oai_capes/1.0</SchemaLocation>
         </Format>
     </Formats>
 

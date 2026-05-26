@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE item-submission SYSTEM "item-submission.dtd">
 
-
 <item-submission>
 
     <submission-map>
         <!-- Default submission process -->
-        <name-map collection-handle="default" submission-name="URICER"/>
+        <name-map collection-handle="default" submission-name="Publication"/>
 
+        <name-map collection-entity-type="Publication" submission-name="Publication"/>
+        <name-map collection-entity-type="Person"      submission-name="Person"/>
+        <name-map collection-entity-type="OrgUnit"     submission-name="OrgUnit"/>
     </submission-map>
 
     <step-definitions>
+        <!-- The "collection" step is a "special step" which is *REQUIRED* -->
+        <!-- In DSpace, all submitted items must be immediately assigned -->
+        <!-- to a collection. This step ensures that a collection is always selected. -->
         <step-definition id="collection">
             <heading></heading>
             <processing-class>org.dspace.app.rest.submit.step.CollectionStep</processing-class>
             <type>collection</type>
         </step-definition>
 
+        <!-- Upload de bitstreams (arquivo principal + suplementares) -->
         <step-definition id="upload">
             <heading>submit.progressbar.upload</heading>
             <processing-class>org.dspace.app.rest.submit.step.UploadStep</processing-class>
             <type>upload</type>
         </step-definition>
+
+        <!-- Licença de depósito DSpace (aceite do depositante) -->
         <step-definition id="license">
             <heading>submit.progressbar.license</heading>
             <processing-class>org.dspace.app.rest.submit.step.LicenseStep</processing-class>
@@ -29,100 +37,124 @@
             <scope visibilityOutside="read-only">submission</scope>
         </step-definition>
 
-        <!-- This optional step may allow the user to select a Creative Commons license -->
+        <!-- Licença Creative Commons (opcional — não bloqueia submissão) -->
         <step-definition id="cclicense" mandatory="false">
             <heading>submit.progressbar.CClicense</heading>
             <processing-class>org.dspace.app.rest.submit.step.CCLicenseStep</processing-class>
             <type>cclicense</type>
         </step-definition>
 
-        <!-- This optional step may allow the user to select access conditions on the item -->
+        <!-- Condições de acesso (embargo, acesso restrito) -->
         <step-definition id="itemAccessConditions">
             <heading>submit.progressbar.accessCondition</heading>
             <processing-class>org.dspace.app.rest.submit.step.AccessConditionStep</processing-class>
             <type>accessCondition</type>
         </step-definition>
 
-        <step-definition id="extractionstep">
-            <heading>submit.progressbar.ExtractMetadataStep</heading>
-            <processing-class>org.dspace.app.rest.submit.step.ExtractMetadataStep</processing-class>
-            <type>extract</type>
-        </step-definition>
-
-        <!-- Detect duplicates step -->
+        <!-- Detecção de duplicatas — CRÍTICO para Entities -->
         <step-definition id="duplicates">
             <heading>submit.progressbar.duplicates</heading>
             <processing-class>org.dspace.app.rest.submit.step.DuplicateDetectionStep</processing-class>
             <type>duplicates</type>
         </step-definition>
 
-        <!-- Custom URICER steps -->
-        <step-definition id="itemForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepItem</heading>
+        <!-- == Steps de formulário de descrição == -->
+
+        <!-- Formulário principal da Publication (publicationStep em submission-forms.xml) -->
+        <step-definition id="publicationStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="autorForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepAutor</heading>
+
+        <!-- Formulário de Autor/Orientador/Coorientador/Membro de Banca (publicationPersonStep em submission-forms.xml)-->
+        <step-definition id="publicationPersonStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepPubPerson</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="orientadorForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepOrientador</heading>
+
+        <!-- Formulário de metadados (publicationMetadataStep em submission-forms.xml) -->
+        <step-definition id="publicationMetadataStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepPubMetadata</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="coorientadorForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepCoorientador</heading>
+        
+        <!-- Formulário de Unidade Organizacional (publicationOrgUnitStep em submission-forms.xml) -->
+        <step-definition id="publicationOrgUnitStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepPubOrgUnit</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="bancaForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepBanca</heading>
+
+        <!-- Formulário de perfil da Person (personStep em submission-forms.xml) -->
+        <step-definition id="personStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepPersonProfile</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="metadadosForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepMetadados</heading>
+
+        <!-- Formulário de unidade organizacional (orgUnitStep em submission-forms.xml) -->
+        <step-definition id="orgUnitStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepOrgUnit</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-        <step-definition id="metadados2Form" mandatory="true">
-            <heading>submit.progressbar.describe.stepMetadados2</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="instituicaoForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepInstituicao</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="direitosForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepDireitos</heading>
+
+        <!-- Formulário de direitos de acesso (rightsStep em submission-forms.xml) -->
+        <step-definition id="rightsStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepRights</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
 
     </step-definitions>
 
+    <!-- ============================================================
+         PROCESSOS DE SUBMISSÃO POR ENTITY TYPE
+    ============================================================ -->
     <submission-definitions>
 
-        <submission-process name="URICER">
+        <!--
+            Publication: TCC, Artigo, Dissertação, Tese, Livro, Anais
+            Fluxo: Collection → Descrever → Duplicatas → Upload → Licença
+            Nota: dc.rights e dc.rights.uri já estão no publicationStep,
+            portanto o step cclicense é opcional/complementar.
+        -->
+        <submission-process name="Publication">
             <step id="collection"/>
-            <step id="itemForm"/>
-            <step id="autorForm"/>
-            <step id="orientadorForm"/>
-            <step id="coorientadorForm"/>
-            <step id="bancaForm"/>
-            <step id="metadadosForm"/>
-            <step id="metadados2Form"/>
-            <step id="instituicaoForm"/>
-            <step id="direitosForm"/>
+            <step id="publicationStep"/>
+            <step id="publicationPersonStep"/>
+            <step id="publicationMetadataStep"/>
+            <step id="publicationOrgUnitStep"/>
+            <step id="rightsStep"/>
             <step id="duplicates"/>
-            <step id="upload"/>
             <!-- <step id="license"/> -->
-            <!-- <step id="cclicense"/> -->
+            <step id="upload"/>
         </submission-process>
+
+        <!--
+            Person: perfil de autor, orientador, coorientador, membro de banca
+            Fluxo: Collection → Perfil → Duplicatas → Upload (foto/CV) → Licença
+            Upload opcional mas habilitado: permite foto e CV em PDF.
+        -->
+        <submission-process name="Person">
+            <step id="collection"/>
+            <step id="personStep"/>
+            <step id="duplicates"/>
+        </submission-process>
+
+        <!--
+            OrgUnit: URI Erechim, departamentos, programas de pós-graduação
+            Fluxo: Collection → Dados inst. → Duplicatas → Upload (logo) → Licença
+        -->
+        <submission-process name="OrgUnit">
+            <step id="collection"/>
+            <step id="orgUnitStep"/>
+            <step id="duplicates"/>
+        </submission-process>
+
     </submission-definitions>
 
 </item-submission>

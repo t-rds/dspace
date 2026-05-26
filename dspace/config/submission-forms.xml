@@ -1,12 +1,40 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE input-forms SYSTEM "submission-forms.dtd">
-
 
 <input-forms>
 
     <form-definitions>
-        <!-- ITEM/TÍTULO/DATA/IDIOMA -->
-        <form name="itemForm">
+
+        <!-- Form used for entering in Bitstream/File metadata after uploading a file -->
+        <form name="bitstream-metadata">
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>title</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Title</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the name of the file.</hint>
+                    <required>You must enter a name for this file</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>description</dc-element>
+                    <repeatable>false</repeatable>
+                    <label>Description</label>
+                    <input-type>textarea</input-type>
+                    <hint>Enter a description for the file</hint>
+                    <required></required>
+                </field>
+            </row>
+        </form>
+
+        <form name="publicationStep">
+
+            <!-- Tipo do documento -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -23,8 +51,23 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
+                    <dc-element>type</dc-element>
+                    <dc-qualifier>intellectual</dc-qualifier> <repeatable>false</repeatable>
+                    <label>Tipo de Produção Intelectual</label>
+                    <type-bind>master thesis, doctoral thesis</type-bind>
+                    <input-type value-pairs-name="tipo_producao_intelectual">dropdown</input-type>
+                    <hint>Selecione a categoria que melhor descreve esta produção.</hint>
+                    <required>Selecione um tipo de produção.</required>
+                </field>
+            </row>
+
+            <!-- Título principal -->
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
                     <dc-element>title</dc-element>
                     <dc-qualifier></dc-qualifier>
+                    <language value-pairs-name="common_iso_languages">true</language>
                     <repeatable>false</repeatable>
                     <label>Título</label>
                     <input-type>onebox</input-type>
@@ -33,35 +76,37 @@
                 </field>
             </row>
 
+            <!-- Título alternativo -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>title</dc-element>
                     <dc-qualifier>alternative</dc-qualifier>
+                    <language value-pairs-name="common_iso_languages">true</language>
                     <repeatable>true</repeatable>
                     <label>Título alternativo</label>
                     <input-type>onebox</input-type>
-                    <hint>Se o item tiver algum título alternativo, por favor, insira-os aqui.</hint>
+                    <hint>Se o item tiver algum título alternativo (ex: tradução), insira-o aqui.</hint>
                     <required></required>
                 </field>
             </row>
 
+            <!-- Data de publicação / defesa -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>date</dc-element>
                     <dc-qualifier>issued</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Data da defesa</label>
+                    <label>Data de publicação / defesa</label>
                     <style>col-sm-6</style>
                     <input-type>date</input-type>
-                    <hint>Por favor, forneça a data da publicação anterior ou distribuição pública.
-                        Você pode omitir o dia e/ou mês se não forem aplicáveis.
-                    </hint>
+                    <hint>Forneça a data de publicação ou de defesa. Pode omitir dia e mês se não aplicável.</hint>
                     <required>Você deve inserir pelo menos o ano.</required>
                 </field>
             </row>
 
+            <!-- Idioma -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -74,176 +119,93 @@
                     <required></required>
                 </field>
             </row>
+
         </form>
-        <!-- DADOS AUTOR -->
-        <form name="autorForm">
+
+        <form name="publicationPersonStep">
+            <!-- == Relation-fields: vínculos com Entities == -->
+            <!-- Autor(es) → vincula com Person Entity -->
             <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>creator</dc-element>
-                    <dc-qualifier></dc-qualifier>
+                <relation-field>
+                    <relationship-type>isAuthorOfPublication</relationship-type>
+                    <search-configuration>person</search-configuration>
                     <repeatable>true</repeatable>
-                    <label>Autor</label>
-                    <style>col-sm-6</style>
-                    <input-type>name</input-type>
-                    <hint>Informe o(s) Autor(es).</hint>
-                    <required></required>
-                </field>
+                    <label>Autor(es)</label>
+                    <hint>Busque pelo nome do autor já cadastrado como perfil (Entity Person) ou informe manualmente.</hint>
+                    <linked-metadata-field>
+                        <dc-schema>dc</dc-schema>
+                        <dc-element>contributor</dc-element>
+                        <dc-qualifier>author</dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
+                </relation-field>
             </row>
 
+            <!-- Orientador → vincula com Person Entity -->
             <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>creator</dc-element>
-                    <dc-qualifier>lattes</dc-qualifier>
+                <relation-field>
+                    <relationship-type>isAdvisorOfPublication</relationship-type>
+                    <search-configuration>person</search-configuration>
                     <repeatable>true</repeatable>
-                    <label>Lattes do Autor</label>
-                    <input-type>onebox</input-type>
-                    <hint>Lattes do(s) autor(es). Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank" &gt;(https://lattes.cnpq.br/XXXXXXXXXXXXXXXX)&lt;/a&gt; a este item.</hint>
-                    <required></required>
-                </field>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>creator</dc-element>
-                    <dc-qualifier>id</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>ORCID do Autor</label>
-                    <input-type>onebox</input-type>
-                    <hint>ORCID(s) do(s) autor(es). Exemplo: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org/XXXX-XXXX-XXXX-XXXX)&lt;/a&gt;.
-                       Caso o pesquisador não possua cadastro no ORCID recomenda-se a sua realização: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org)&lt;/a&gt;.</hint>
-                    <required></required>
-                </field>
-            </row>
-        </form>
-        <!-- DADOS ORIENTADOR/COORIENTADOS -->
-        <form name="orientadorForm">
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisor</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>Orientador</label>
-                    <style>col-sm-6</style>
-                    <input-type>name</input-type>
-                    <hint>Informe o(s) Orientador(es).</hint>
-                    <required></required>
-                </field>
+                    <label>Orientador(es)</label>
+                    <hint>Busque pelo nome do orientador já cadastrado ou informe manualmente.</hint>
+                    <linked-metadata-field>
+                        <dc-schema>dc</dc-schema>
+                        <dc-element>contributor</dc-element>
+                        <dc-qualifier>advisor</dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
+                </relation-field>
             </row>
 
+            <!-- Coorientador → vincula com Person Entity -->
             <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisorLattes</dc-qualifier>
+                <relation-field>
+                    <relationship-type>isCoAdvisorOfPublication</relationship-type>
+                    <search-configuration>person</search-configuration>
                     <repeatable>true</repeatable>
-                    <label>Lattes do Autor</label>
-                    <input-type>onebox</input-type>
-                    <hint>Lattes do(s) orientador(es). Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank" &gt;(https://lattes.cnpq.br/XXXXXXXXXXXXXXXX)&lt;/a&gt; a este item.</hint>
-                    <required></required>
-                </field>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisorID</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>ORCID do Autor</label>
-                    <input-type>onebox</input-type>
-                    <hint>ORCID(s) do Orientador(es). Exemplo: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org/XXXX-XXXX-XXXX-XXXX)&lt;/a&gt;.
-                       Caso o pesquisador não possua cadastro no ORCID recomenda-se a sua realização: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org)&lt;/a&gt;.</hint>
-                    <required></required>
-                </field>
-            </row>
-        </form>
-        <form name="coorientadorForm">
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisorco</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>Coorientador</label>
-                    <style>col-sm-6</style>
-                    <input-type>name</input-type>
-                    <hint>Informe o(s) Autor(es).</hint>
-                    <required></required>
-                </field>
+                    <label>Coorientador(es)</label>
+                    <hint>Busque pelo nome do coorientador já cadastrado ou informe manualmente.</hint>
+                    <linked-metadata-field>
+                        <dc-schema>dc</dc-schema>
+                        <dc-element>contributor</dc-element>
+                        <dc-qualifier>advisorco</dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
+                </relation-field>
             </row>
 
+            <!-- Membros da Banca → vincula com Person Entity -->
             <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisorcoLattes</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>Lattes do Coorientador</label>
-                    <input-type>onebox</input-type>
-                    <hint>Informe o ID lattes do(s) coorientador. Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank" &gt;(https://lattes.cnpq.br/XXXXXXXXXXXXXXXX)&lt;/a&gt; a este item.</hint>
-                    <required></required>
-                </field>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>advisorcoID</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>ORCID do Coorientador</label>
-                    <input-type>onebox</input-type>
-                    <hint>Informe o(s) ORCID(s) do(s) coorientador(es). Exemplo: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org/XXXX-XXXX-XXXX-XXXX)&lt;/a&gt;.
-                       Caso o coorientador não possua cadastro no ORCID recomenda-se a sua realização: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org)&lt;/a&gt;.</hint>
-                    <required></required>
-                </field>
-            </row>
-        </form>
-        <!-- DADOS MEMBROS DA BANCA -->
-        <form name="bancaForm">
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>referee</dc-qualifier>
+                <relation-field>
+                    <relationship-type>isRefereeOfPublication</relationship-type>
+                    <search-configuration>person</search-configuration>
                     <repeatable>true</repeatable>
                     <label>Membros da Banca</label>
-                    <input-type>name</input-type>
-                    <hint>Membro(s) da banca.</hint>
-                    <required></required>
-                </field>
-            </row>
-
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>refereeLattes</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>Lattes do Membro da Banca</label>
-                    <input-type>onebox</input-type>
-                    <hint>Lattes do(s) coorientador. Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank" &gt;(https://lattes.cnpq.br/XXXXXXXXXXXXXXXX)&lt;/a&gt; a este item.</hint>
-                    <required></required>
-                </field>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>contributor</dc-element>
-                    <dc-qualifier>refereeID</dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>ORCID do Membro da Banca</label>
-                    <input-type>onebox</input-type>
-                    <hint>ORCID(s) do(s) mebro(s) da banca. Exemplo: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org/XXXX-XXXX-XXXX-XXXX)&lt;/a&gt;.
-                       Caso o pesquisador não possua cadastro no ORCID recomenda-se a sua realização: &lt;a href="https://orcid.org" target="_blank" &gt;(https://orcid.org)&lt;/a&gt;.</hint>
-                    <required></required>
-                </field>
+                    <hint>Busque pelo nome do membro de banca já cadastrado ou informe manualmente.</hint>
+                    <linked-metadata-field>
+                        <dc-schema>dc</dc-schema>
+                        <dc-element>contributor</dc-element>
+                        <dc-qualifier>referee</dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
+                </relation-field>
             </row>
         </form>
-        <!-- XXXXX -->
-        <form name="metadadosForm">
+
+        <form name="publicationMetadataStep">
+            <!-- == Metadados descritivos == -->
+            <!-- Resumo em português -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>resumo</dc-qualifier>
+                    <language value-pairs-name="common_iso_languages">true</language>
                     <repeatable>false</repeatable>
-                    <label>Resumo</label>
+                    <label>Resumo em Portguês</label>
                     <input-type>textarea</input-type>
-                    <hint>Insira o resumo do item.</hint>
+                    <hint>Insira o resumo em português.</hint>
                     <required></required>
                 </field>
             </row>
@@ -253,27 +215,32 @@
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>abstract</dc-qualifier>
+                    <language value-pairs-name="common_iso_languages">true</language>
                     <repeatable>true</repeatable>
-                    <label>Abstract/Resumen</label>
+                    <label>Resumo em outro idioma</label>
                     <input-type>textarea</input-type>
-                    <hint>Insira o abstract do item.</hint>
+                    <hint>Insira o resumo.</hint>
                     <required></required>
                 </field>
             </row>
 
+            <!-- Palavras-chave livres -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>subject</dc-element>
                     <dc-qualifier></dc-qualifier>
+                    <language value-pairs-name="common_iso_languages">true</language>
                     <repeatable>true</repeatable>
                     <label>Assunto(s)</label>
-                    <input-type>tag</input-type>
-                    <hint>Informe as palavras-chave do documento descrito. Tecle enter para inserir individualmente as palavras. Devem ser indicadas no mínimo 3 e no máximo 5 palavras-chave por idioma.</hint>
+                    <style>col-sm-6</style>
+                    <input-type>onebox</input-type>
+                    <hint>Informe as palavras-chave. Tecle Enter para inserir individualmente. Mínimo 3, máximo 5.</hint>
                     <required>Mínimo 3 e no máximo 5 palavras-chave</required>
                 </field>
             </row>
 
+            <!-- Assuntos CNPq -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -288,6 +255,7 @@
                 </field>
             </row>
 
+            <!-- Citação ABNT -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -296,13 +264,28 @@
                     <repeatable>false</repeatable>
                     <label>Citação</label>
                     <input-type>textarea</input-type>
-                    <hint>Insira a citação padrão ABNT.</hint>
+                    <hint>Insira a referência completa no padrão ABNT.</hint>
                     <required></required>
                 </field>
             </row>
-        </form>
 
-        <form name="metadados2Form">
+            <!-- DOI -->
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>doi</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>DOI</label>
+                    <style>col-sm-6</style>
+                    <type-bind>article, book</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Identificador digital do objeto. Exemplo: https://doi.org/10.XXXX/XXXXX</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- Nota -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -311,52 +294,48 @@
                     <repeatable>false</repeatable>
                     <label>Nota</label>
                     <input-type>textarea</input-type>
-                    <hint>Nota.</hint>
+                    <hint>Observações adicionais sobre o item.</hint>
                     <required></required>
                 </field>
             </row>
+
+            <!-- Agência de Fomento -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>sponsorship</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Agencia de Fomento</label>
+                    <label>Agência de Fomento</label>
                     <input-type>textarea</input-type>
-                    <hint>Insira os nomes de quaisquer patrocinadores e/ou códigos de financiamento na caixa.</hint>
+                    <hint>Informe patrocinadores e/ou códigos de financiamento (ex: CAPES, CNPq, FAPERGS).</hint>
                     <required></required>
                 </field>
             </row>
+
         </form>
 
-        <!-- DADOS INSTITUIÇÃO -->
-        <form name="instituicaoForm">
+        <form name="publicationOrgUnitStep">
+            <!-- == Vínculo com OrgUnit == -->
+            <!-- Instituição → vincula com OrgUnit Entity
+                 (CORRIGIDO: repeatable true para co-tutela/dois depto.) -->
             <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>publisher</dc-element>
-                    <dc-qualifier>grantor</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Nome da instituição</label>
-                    <input-type value-pairs-name="common_ies">dropdown</input-type>
-                    <hint>Instituição.</hint>
-                    <required></required>
-                </field>
+                <relation-field>
+                    <relationship-type>isOrgUnitOfPublication</relationship-type>
+                    <search-configuration>orgunit</search-configuration>
+                    <repeatable>true</repeatable>
+                    <label>Instituição / Unidade</label>
+                    <hint>Busque pela instituição ou unidade já cadastrada (Entity OrgUnit). Ex: "URI Erechim".</hint>
+                    <linked-metadata-field>
+                        <dc-schema>dc</dc-schema>
+                        <dc-element>publisher</dc-element>
+                        <dc-qualifier></dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
+                </relation-field>
             </row>
 
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>publisher</dc-element>
-                    <dc-qualifier>initials</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Sigla da instituição</label>
-                    <input-type value-pairs-name="common_sigla_ies">dropdown</input-type>
-                    <hint></hint>
-                    <required></required>
-                </field>
-            </row>
-
+            <!-- Departamento / Área (campo livre complementar) -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -364,42 +343,41 @@
                     <dc-qualifier>department</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Faculdade, Instituto ou Departamento</label>
-                    <input-type value-pairs-name="common_department">dropdown</input-type>
-                    <hint>Faculdade, Instituto ou Departamento.</hint>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: Departamento de Ciência da Computação, Departamento de Ciências da Saúde.</hint>
                     <required></required>
                 </field>
             </row>
 
+            <!-- Curso / Programa de Pós-Graduação -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>publisher</dc-element>
                     <dc-qualifier>program</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Nome do curso ou programa de pós-graduação por extenso</label>
+                    <label>Curso ou Programa de Pós-Graduação</label>
                     <input-type>onebox</input-type>
-                    <hint>Nome do curso ou programa de pós-graduação por extenso.</hint>
+                    <hint>Nome completo do curso ou PPG. Ex: Mestrado em Educação, Programa de Pós-Graduação em Saúde Coletiva.</hint>
                     <required></required>
                 </field>
-            </row>
-
-            <row>
                 <field>
                     <dc-schema>dc</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>ror</dc-qualifier>
+                    <dc-element>publisher</dc-element>
+                    <dc-qualifier>programCode</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Identificador ROR</label>
+                    <label>Curso ou Programa de Pós-Graduação</label>
+                    <type-bind>master thesis, doctoral thesis</type-bind>
                     <input-type>onebox</input-type>
-                    <hint>Selecione o ROR da nossa instituição ou digite o identificador de outra instituição &lt;a href="https://ror.org/05bnh4739" target="_blank" &gt;(https://ror.org/05bnh4739)&lt;/a&gt;.</hint>
-                    <required></required>
-                    <!-- <default-value>https://ror.org/05bnh4739</default-value> -->
+                    <hint>Código do Programa de Pós-Graduação no Sistema Nacional de Pós-Graduação.</hint>
+                    <required>Código único do Programa de Pós-Graduação stricto sensu no Sistema Nacional de Pós-Graduação, composto por 8 digítos iniciais referentes à Instituição de Ensino Superior e de Pesquisa e 5 dígitos subsequentes referentes ao Programa de Pós-Graduação.</required>
                 </field>
             </row>
+
         </form>
 
-        <!-- CC LICENSE -->
-        <form name="direitosForm">
+        <form name="rightsStep">
+            <!-- == Direitos de acesso == -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -408,8 +386,8 @@
                     <repeatable>false</repeatable>
                     <label>Permissão de acesso</label>
                     <input-type value-pairs-name="rights">dropdown</input-type>
-                    <hint>Para que o repositório possa disseminar sua produção científica, é necessário conceder o acesso aberto ao documento. Reserve um momento para ler os termos da licença disponíveis ao final do formulário.</hint>
-                    <required>Para que o repositório possa disseminar sua produção científica, é necessário conceder o acesso aberto ao documento. Reserve um momento para ler os termos da licença disponíveis ao final do formulário.</required>
+                    <hint>Para disseminar sua produção científica, conceda acesso aberto sempre que possível.</hint>
+                    <required>Você deve selecionar a permissão de acesso.</required>
                 </field>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -418,236 +396,422 @@
                     <repeatable>false</repeatable>
                     <label>Licença Creative Commons (CC)</label>
                     <input-type value-pairs-name="cc_license_types">dropdown</input-type>
-                    <hint>Associe uma licença Creative Commons 4.0 Internacional &lt;a href="https://creativecommons.org/licenses/" target="_blank" &gt;(https://creativecommons.org/licenses/)&lt;/a&gt; a este item.</hint>
-                    <required>Tem que indicar uma licença Creative Commons! Caso não se aplique ou desconhecer pode selecionar a opção 'Não aplicável (N/A)'.</required>
+                    <hint>Associe uma licença Creative Commons 4.0 Internacional &lt;a href="https://creativecommons.org/licenses" target="_blank"&gt;(https://creativecommons.org/licenses)&lt;/a&gt; a este item.</hint>
+                    <required>Selecione uma licença CC ou a opção "Sem licença CC".</required>
                 </field>
             </row>
         </form>
 
+        <!-- ========================================================
+             FORMULÁRIO: personStep
+             Usado por: Person (autor, orientador, coorientador, banca)
+             Campos: familyName, givenName, ORCID, Lattes, e-mail,
+                     jobTitle (NOVO: papel/função do pesquisador)
+        ======================================================== -->
+        <form name="personStep">
+
+            <!-- Nome e Sobrenome na mesma linha -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>familyName</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Sobrenome</label>
+                    <style>col-sm-6</style>
+                    <input-type>onebox</input-type>
+                    <hint>Sobrenome(s) do pesquisador.</hint>
+                    <required>O sobrenome é obrigatório.</required>
+                </field>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>givenName</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Nome</label>
+                    <style>col-sm-6</style>
+                    <input-type>onebox</input-type>
+                    <hint>Nome(s) do pesquisador.</hint>
+                    <required>O nome é obrigatório.</required>
+                </field>
+            </row>
+
+            <!-- ORCID -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>orcid</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ID ORCID</label>
+                    <input-type>onebox</input-type>
+                    <hint>ORCID do pesquisador. Exemplo: &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org/XXXX-XXXX-XXXX-XXXX&lt;/a&gt;. Recomenda-se cadastro em &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org&lt;/a&gt;.</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- Lattes -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>lattes</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ID Lattes</label>
+                    <input-type>onebox</input-type>
+                    <hint>URL do currículo Lattes. Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank"&gt;https://lattes.cnpq.br/XXXXXXXXXXXXXXXX&lt;/a&gt;.</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- E-mail institucional -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>email</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>E-mail institucional</label>
+                    <style>col-sm-6</style>
+                    <input-type>onebox</input-type>
+                    <hint>E-mail institucional do pesquisador (ex: nome@uricer.edu.br).</hint>
+                    <required></required>
+                </field>
+            </row>
+
+        </form>
+
+        <!-- ========================================================
+             FORMULÁRIO: orgUnitStep
+             Usado por: OrgUnit (URI Erechim, departamentos, PPGs)
+             MELHORIAS: adicionado organization.type (dropdown),
+             mantidos todos os campos da versão enviada.
+        ======================================================== -->
+        <form name="orgUnitStep">
+
+            <!-- Nome oficial -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>legalName</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Nome da Instituição / Unidade</label>
+                    <input-type>onebox</input-type>
+                    <hint>Nome completo. Ex: Universidade Regional Integrada do Alto Uruguai e das Missões</hint>
+                    <required>O nome é obrigatório.</required>
+                </field>
+            </row>
+
+            <!-- Sigla e Tipo na mesma linha -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>acronym</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Sigla</label>
+                    <style>col-sm-4</style>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: URI, URI Erechim, UFRGS.</hint>
+                    <required></required>
+                </field>
+                <!-- Tipo da unidade -->
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>type</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Tipo de Unidade</label>
+                    <style>col-sm-8</style>
+                    <input-type value-pairs-name="orgunit_types">dropdown</input-type>
+                    <hint>Selecione o tipo da unidade organizacional.</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- ROR -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>ror</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Identificador ROR</label>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: &lt;a href="https://ror.org/05bnh4739" target="_blank"&gt;https://ror.org/05bnh4739&lt;/a&gt; (URI Erechim).</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- ISNI -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>isni</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Identificador ISNI</label>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: https://isni.org/isni/0000000110111626</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- Cidade/Sede -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>address</dc-element>
+                    <dc-qualifier>addressLocality</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Cidade / Sede</label>
+                    <style>col-sm-6</style>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: Erechim, RS.</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- Website -->
+            <row>
+                <field>
+                    <dc-schema>organization</dc-schema>
+                    <dc-element>url</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Website</label>
+                    <input-type>onebox</input-type>
+                    <hint>Ex: https://uricer.edu.br</hint>
+                    <required></required>
+                </field>
+            </row>
+
+        </form>
+
     </form-definitions>
 
+    <!-- ============================================================
+         VALUE-PAIRS
+    ============================================================ -->
     <form-value-pairs>
+
+        <!-- Tipos de publicação (valores COAR/DRIVER) -->
+        <value-pairs value-pairs-name="common_types" dc-term="type">
+            <pair>
+                <displayed-value>Monografia / Trabalho de Conclusão de Curso (TCC)</displayed-value>
+                <stored-value>bachelor thesis</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Dissertação de Mestrado</displayed-value>
+                <stored-value>master thesis</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Tese de Doutorado</displayed-value>
+                <stored-value>doctoral thesis</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Artigo Científico</displayed-value>
+                <stored-value>article</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Artigo de Periódico</displayed-value>
+                <stored-value>journal article</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Trabalho em Anais de Evento</displayed-value>
+                <stored-value>conference object</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Livro</displayed-value>
+                <stored-value>book</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Capítulo de Livro</displayed-value>
+                <stored-value>book part</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Relatório Técnico</displayed-value>
+                <stored-value>report</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Outro tipo de documento</displayed-value>
+                <stored-value>other</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Idiomas -->
+        <value-pairs value-pairs-name="common_iso_languages" dc-term="language_iso">
+            <pair>
+                <displayed-value>Português</displayed-value>
+                <stored-value>por</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>English</displayed-value>
+                <stored-value>eng</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Spanish</displayed-value>
+                <stored-value>spa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>French</displayed-value>
+                <stored-value>fra</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>German</displayed-value>
+                <stored-value>deu</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Italian</displayed-value>
+                <stored-value>ita</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Japanese</displayed-value>
+                <stored-value>jpn</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese</displayed-value>
+                <stored-value>zho</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Russian</displayed-value>
+                <stored-value>rus</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Arabic</displayed-value>
+                <stored-value>ara</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Korean</displayed-value>
+                <stored-value>kor</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Direitos de acesso (vocab COAR/DRIVER) -->
+        <value-pairs value-pairs-name="rights" dc-term="rights">
+            <pair>
+                <displayed-value>Acesso aberto</displayed-value>
+                <stored-value>open access</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Acesso embargado</displayed-value>
+                <stored-value>embargoed access</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Acesso restrito</displayed-value>
+                <stored-value>restricted access</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Somente metadados</displayed-value>
+                <stored-value>metadata only access</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Licenças Creative Commons -->
+        <value-pairs value-pairs-name="cc_license_types" dc-term="license">
+            <pair>
+                <displayed-value>Atribuição-NãoComercial-CompartilhaIgual (CC-BY-NC-SA 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nc-sa/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Atribuição (CC-BY 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Atribuição-CompartilhaIgual (CC-BY-SA 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-sa/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Atribuição-SemDerivações (CC-BY-ND 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nd/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Atribuição-NãoComercial (CC-BY-NC 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nc/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Atribuição-NãoComercial-SemDerivações (CC-BY-NC-ND 4.0)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nc-nd/4.0</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Sem licença CC</displayed-value>
+                <stored-value>N/A</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Tipos de OrgUnit -->
+        <value-pairs value-pairs-name="orgunit_types" dc-term="type">
+            <pair>
+                <displayed-value>Universidade</displayed-value>
+                <stored-value>University</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Campus / Unidade</displayed-value>
+                <stored-value>Campus</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Faculdade / Centro</displayed-value>
+                <stored-value>Faculty</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Departamento</displayed-value>
+                <stored-value>Department</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Programa de Pós-Graduação</displayed-value>
+                <stored-value>GraduateProgram</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Instituto de Pesquisa</displayed-value>
+                <stored-value>ResearchInstitute</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Identificadores -->
         <value-pairs value-pairs-name="common_identifiers" dc-term="identifier">
             <pair>
                 <displayed-value>ISSN</displayed-value>
                 <stored-value>issn</stored-value>
             </pair>
             <pair>
-                <displayed-value>Other</displayed-value>
-                <stored-value>other</stored-value>
+                <displayed-value>ISBN</displayed-value>
+                <stored-value>isbn</stored-value>
             </pair>
             <pair>
-                <displayed-value>ISMN</displayed-value>
-                <stored-value>ismn</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Gov't Doc #</displayed-value>
-                <stored-value>govdoc</stored-value>
+                <displayed-value>DOI</displayed-value>
+                <stored-value>doi</stored-value>
             </pair>
             <pair>
                 <displayed-value>URI</displayed-value>
                 <stored-value>uri</stored-value>
             </pair>
             <pair>
-                <displayed-value>ISBN</displayed-value>
-                <stored-value>isbn</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="common_types" dc-term="type">
-            <pair>
-                <displayed-value>Trabalho de Conclusão de Curso</displayed-value>
-                <stored-value>Trabalho de Conclusão de Curso</stored-value>
+                <displayed-value>Gov't Doc #</displayed-value>
+                <stored-value>govdoc</stored-value>
             </pair>
             <pair>
-                <displayed-value>Artigo Científico</displayed-value>
-                <stored-value>Artigo Científico</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Artigo de Periódico</displayed-value>
-                <stored-value>Artigo de Periódico</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Artigo de Evento</displayed-value>
-                <stored-value>Artigo de Evento</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Tese</displayed-value>
-                <stored-value>Tese</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Dissertação</displayed-value>
-                <stored-value>Dissertação</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Livro</displayed-value>
-                <stored-value>Livro</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Capítulo de Livro</displayed-value>
-                <stored-value>Capítulo de Livro</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Relatório de Pesquisa</displayed-value>
-                <stored-value>Relatório de Pesquisa</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Outro tipo de documento</displayed-value>
-                <stored-value>Outro</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="common_iso_languages" dc-term="language_iso">
-            <pair>
-                <displayed-value>Português</displayed-value>
-                <stored-value>pt_BR</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>N/A</displayed-value>
-                <stored-value></stored-value>
-            </pair>
-            <pair>
-                <displayed-value>English (United States)</displayed-value>
-                <stored-value>en_US</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>English</displayed-value>
-                <stored-value>en</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Spanish</displayed-value>
-                <stored-value>es</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>German</displayed-value>
-                <stored-value>de</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>French</displayed-value>
-                <stored-value>fr</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Italian</displayed-value>
-                <stored-value>it</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Japanese</displayed-value>
-                <stored-value>ja</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Chinese</displayed-value>
-                <stored-value>zh</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Portuguese (Portugal)</displayed-value>
-                <stored-value>pt</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Turkish</displayed-value>
-                <stored-value>tr</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>(Other)</displayed-value>
+                <displayed-value>Other</displayed-value>
                 <stored-value>other</stored-value>
             </pair>
         </value-pairs>
 
-        <value-pairs value-pairs-name="common_ies" dc-term="publisher">
+        <value-pairs value-pairs-name="tipo_producao_intelectual" dc-term="type_intellectual">
             <pair>
-                <displayed-value>Universidade Regional Integrada do Alto Uruguai e das Missões</displayed-value>
-                <stored-value>Universidade Regional Integrada do Alto Uruguai e das Missões</stored-value>
+                <displayed-value>Bibliográfica</displayed-value>
+                <stored-value>Bibliográfica</stored-value>
             </pair>
             <pair>
-                <displayed-value>(Outra)</displayed-value>
-                <stored-value>other</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="common_sigla_ies" dc-term="initials">
-            <pair>
-                <displayed-value>URI Erechim</displayed-value>
-                <stored-value>URI Erechim</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="common_department" dc-term="department">
-            <pair>
-                <displayed-value>Ciências Agrárias</displayed-value>
-                <stored-value>Ciências Agrárias</stored-value>
+                <displayed-value>Artística</displayed-value>
+                <stored-value>Artística</stored-value>
             </pair>
             <pair>
-                <displayed-value>Ciências Biológicas</displayed-value>
-                <stored-value>Ciências Biológicas</stored-value>
+                <displayed-value>Técnica</displayed-value>
+                <stored-value>Técnica</stored-value>
             </pair>
             <pair>
-                <displayed-value>Ciências da Saúde</displayed-value>
-                <stored-value>Ciências da Saúde</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Ciências Exatas e da Terra</displayed-value>
-                <stored-value>Ciências Exatas e da Terra</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Ciências Humanas</displayed-value>
-                <stored-value>Ciências Humanas</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Ciências Sociais Aplicadas</displayed-value>
-                <stored-value>Ciências Sociais Aplicadas</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Engenharias e Ciência da Computação</displayed-value>
-                <stored-value>Engenharias e Ciência da Computação</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Linguística, Letras e Artes</displayed-value>
-                <stored-value>Linguística, Letras e Artes</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="rights" dc-term="rights">
-            <pair>
-                <displayed-value>Acesso aberto</displayed-value>
-                <stored-value>Acesso Aberto</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Acesso embargado</displayed-value>
-                <stored-value>Acesso Embargado</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Acesso restrito</displayed-value>
-                <stored-value>Acesso Restrito</stored-value>
-            </pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="cc_license_types" dc-term="license">
-            <pair>
-                <displayed-value>Atribuição (CC-BY)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Atribuição-CompartilhaIgual (CC-BY-SA)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by-sa/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Atribuição-SemDerivações (CC-BY-ND)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by-nd/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Atribuição-NãoComercial (CC-BY-NC)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by-nc/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Atribuição-NãoComercial-CompartilhaIgual (CC-BY-NC-SA)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by-nc-sa/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Atribuição-NãoComercial-SemDerivações (CC-BY-NC-ND)</displayed-value>
-                <stored-value>http://creativecommons.org/licenses/by-nc-nd/4.0</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Sem licença CC</displayed-value>
-                <stored-value>N/A</stored-value>
+                <displayed-value>Tecnológica</displayed-value>
+                <stored-value>Tecnológica</stored-value>
             </pair>
         </value-pairs>
 
