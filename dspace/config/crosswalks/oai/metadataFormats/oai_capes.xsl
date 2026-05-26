@@ -179,6 +179,14 @@
           <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorOrcid']//*[local-name()='field' and @name='value'][position() = $pos]">
             <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
           </xsl:for-each>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorRid']//*[local-name()='field' and @name='value'][position() = $pos]">
+            <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
+          </xsl:for-each>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorScopus']//*[local-name()='field' and @name='value'][position() = $pos]">
+            <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+          </xsl:for-each>
         </creator>
       </xsl:for-each>
 
@@ -207,6 +215,14 @@
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorOrcid']//*[local-name()='field' and @name='value'][position() = $pos]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
             </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorRid']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorScopus']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+            </xsl:for-each>
           </advisor>
         </xsl:for-each>
 
@@ -222,6 +238,14 @@
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoOrcid']//*[local-name()='field' and @name='value'][position() = $pos]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
             </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoRid']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoScopus']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+            </xsl:for-each>
           </coAdvisor>
         </xsl:for-each>
 
@@ -236,6 +260,14 @@
 
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeOrcid']//*[local-name()='field' and @name='value'][position() = $pos]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeRid']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeScopus']//*[local-name()='field' and @name='value'][position() = $pos]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
             </xsl:for-each>
           </committeeMember>
         </xsl:for-each>

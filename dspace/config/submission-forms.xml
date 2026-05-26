@@ -33,15 +33,13 @@
         </form>
 
         <form name="publicationStep">
-
-            <!-- Tipo do documento -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>type</dc-element>
                     <dc-qualifier></dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Tipo de documento</label>
+                    <label>Tipo do documento</label>
                     <input-type value-pairs-name="common_types">dropdown</input-type>
                     <hint>Selecione o tipo de conteúdo do item.</hint>
                     <required>Você deve selecionar o tipo de documento.</required>
@@ -402,12 +400,6 @@
             </row>
         </form>
 
-        <!-- ========================================================
-             FORMULÁRIO: personStep
-             Usado por: Person (autor, orientador, coorientador, banca)
-             Campos: familyName, givenName, ORCID, Lattes, e-mail,
-                     jobTitle (NOVO: papel/função do pesquisador)
-        ======================================================== -->
         <form name="personStep">
 
             <!-- Nome e Sobrenome na mesma linha -->
@@ -464,6 +456,31 @@
                 </field>
             </row>
 
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>rid</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Researcher ID</label>
+                    <input-type>onebox</input-type>
+                    <hint>ResearcherID do pesquisador. Exemplo: &lt;a href="https://researchid.co/search" target="_blank"&gt;https://researchid.co/ridXXXXXX&lt;/a&gt;.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>scopus-author-id</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Scopus Author ID</label>
+                    <input-type>onebox</input-type>
+                    <hint>Scopus Author ID. Exemplo: &lt;a href="#" target="_blank"&gt;https://scopus.com/XXXXXX&lt;/a&gt;.</hint>
+                    <required></required>
+                </field>
+            </row>
+
             <!-- E-mail institucional -->
             <row>
                 <field>
@@ -481,12 +498,6 @@
 
         </form>
 
-        <!-- ========================================================
-             FORMULÁRIO: orgUnitStep
-             Usado por: OrgUnit (URI Erechim, departamentos, PPGs)
-             MELHORIAS: adicionado organization.type (dropdown),
-             mantidos todos os campos da versão enviada.
-        ======================================================== -->
         <form name="orgUnitStep">
 
             <!-- Nome oficial -->
@@ -591,9 +602,6 @@
 
     </form-definitions>
 
-    <!-- ============================================================
-         VALUE-PAIRS
-    ============================================================ -->
     <form-value-pairs>
 
         <!-- Tipos de publicação (valores COAR/DRIVER) -->
