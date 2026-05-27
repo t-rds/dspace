@@ -191,9 +191,35 @@
       </xsl:for-each>
 
       <!-- capes:programCode -->
-      <xsl:for-each select="$dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value']">
-        <capes:programCode><xsl:value-of select="normalize-space(.)"/></capes:programCode>
-      </xsl:for-each>
+      <xsl:variable name="docType" select="normalize-space($dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value'][1])"/>
+      <xsl:if test="$docType = 'master thesis' or $docType = 'doctoral thesis'">
+        <xsl:variable name="nomeProg" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='program']//*[local-name()='field' and @name='value'][1])"/>
+        <xsl:variable name="progCode" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value'][1])"/>
+        <xsl:choose>
+          <xsl:when test="$nomeProg = 'Doutorado em Engenharia de Alimentos'">
+            <capes:programCode>42010012001D1</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$nomeProg = 'Mestrado em Atenção Integral à Saúde'">
+            <capes:programCode>42037018003M1</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$nomeProg = 'Mestrado em Ecologia'">
+            <capes:programCode>42010012004M0</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$nomeProg = 'Mestrado em Engenharia de Alimentos'">
+            <capes:programCode>42010012001M0</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$nomeProg = 'Mestrado em Tecnologias Sustentáveis'">
+            <capes:programCode>42037018003M1</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$progCode != ''">
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value']">
+              <capes:programCode>
+                <xsl:value-of select="normalize-space(.)"/>
+              </capes:programCode>
+            </xsl:for-each>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:if>
 
       <!-- dcterms:relation -->
       <xsl:for-each select="$dc/*[local-name()='element' and @name='relation']//*[local-name()='field' and @name='value']">
