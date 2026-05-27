@@ -22,7 +22,11 @@
       xmlns:schema="http://schema.org/">
 
       <!-- dcterms:type -->
-      <xsl:for-each select="$dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value']">
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='element' and @name='none']/*[local-name()='field' and @name='value']
+      ">
         <dcterms:type><xsl:value-of select="normalize-space(.)"/></dcterms:type>
       </xsl:for-each>
 
@@ -191,7 +195,11 @@
       </xsl:for-each>
 
       <!-- capes:programCode -->
-      <xsl:variable name="docType" select="normalize-space($dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value'][1])"/>
+      <xsl:variable name="docType" select="normalize-space((
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='element' and @name='none']/*[local-name()='field' and @name='value']
+      )[1])"/>
       <xsl:if test="$docType = 'master thesis' or $docType = 'doctoral thesis'">
         <xsl:variable name="nomeProg" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='program']//*[local-name()='field' and @name='value'][1])"/>
         <xsl:variable name="progCode" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value'][1])"/>
