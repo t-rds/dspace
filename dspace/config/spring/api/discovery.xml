@@ -218,6 +218,9 @@
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterAccessStatus" />
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -401,6 +404,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -540,6 +546,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -686,6 +695,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -1203,6 +1215,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -1273,6 +1288,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
+                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
+                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -1339,6 +1357,9 @@
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
+                <ref bean="searchFilterIsPublicationOfAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfCoAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfRefereeRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -1401,6 +1422,9 @@
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
+                <ref bean="searchFilterIsPublicationOfAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfCoAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfRefereeRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -2121,6 +2145,9 @@
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
+                <ref bean="searchFilterIsPublicationOfAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfCoAdvisorRelation"/>
+                <ref bean="searchFilterIsPublicationOfRefereeRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -2574,6 +2601,40 @@
         <property name="pageSize" value="10"/>
     </bean>
 
+    <bean id="searchFilterIsAdvisorOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isAdvisorOfPublication"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isAdvisorOfPublication.latestForDiscovery</value>
+                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsCoAdvisorOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isCoAdvisorOfPublication"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsRefereeOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isRefereeOfPublication"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isRefereeOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
     <bean id="searchFilterIsProjectOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="isProjectOfPublication"/>
         <property name="metadataFields">
@@ -2896,6 +2957,41 @@
         <property name="pageSize" value="10"/>
     </bean>
 
+    <bean id="searchFilterIsPublicationOfAdvisorRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOfAdvisor"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPublicationOfAdvisor.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPublicationOfCoAdvisorRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOfCoAdvisor"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPublicationOfCoAdvisor.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPublicationOfRefereeRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOfReferee"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPublicationOfReferee.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
 
     <bean id="searchFilterOrganizationAddressCountry"
           class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
