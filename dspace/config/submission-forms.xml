@@ -355,20 +355,10 @@
                     <dc-qualifier>program</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Curso ou Programa de Pós-Graduação</label>
-                    <input-type>onebox</input-type>
-                    <hint>Nome completo do curso ou PPG. Ex: Mestrado em Educação, Programa de Pós-Graduação em Saúde Coletiva.</hint>
-                    <required></required>
-                </field>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>publisher</dc-element>
-                    <dc-qualifier>programCode</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Curso ou Programa de Pós-Graduação</label>
                     <type-bind>master thesis, doctoral thesis</type-bind>
-                    <input-type>onebox</input-type>
-                    <hint>Código do Programa de Pós-Graduação no Sistema Nacional de Pós-Graduação.</hint>
-                    <required>Código único do Programa de Pós-Graduação stricto sensu no Sistema Nacional de Pós-Graduação, composto por 8 digítos iniciais referentes à Instituição de Ensino Superior e de Pesquisa e 5 dígitos subsequentes referentes ao Programa de Pós-Graduação.</required>
+                    <input-type value-pairs-name="pos_graduacao">dropdown</input-type>
+                    <hint>Selecione o programa de Pós-gradução Stricto Sensu.</hint>
+                    <required>Obrigatório informar o programa de pós-graduação.</required>
                 </field>
             </row>
 
@@ -801,6 +791,29 @@
             <pair>
                 <displayed-value>Other</displayed-value>
                 <stored-value>other</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="pos_graduacao" dc-term="publisher_program">
+            <pair>
+                <displayed-value>Doutorado em Engenharia de Alimentos</displayed-value>
+                <stored-value>Doutorado em Engenharia de Alimentos</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Mestrado em Atenção Integral à Saúde</displayed-value>
+                <stored-value>Mestrado em Atenção Integral à Saúde</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Mestrado em Ecologia</displayed-value>
+                <stored-value>Mestrado em Ecologia</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Mestrado em Engenharia de Alimentos</displayed-value>
+                <stored-value>Mestrado em Engenharia de Alimentos</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Mestrado em Tecnologias Sustentáveis</displayed-value>
+                <stored-value>Mestrado em Tecnologias Sustentáveis</stored-value>
             </pair>
         </value-pairs>
 
