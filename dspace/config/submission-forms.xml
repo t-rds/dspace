@@ -341,20 +341,32 @@
                     <dc-qualifier>department</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Faculdade, Instituto ou Departamento</label>
+                    <type-bind>master thesis, doctoral thesis</type-bind>
                     <input-type>onebox</input-type>
                     <hint>Ex: Departamento de Ciência da Computação, Departamento de Ciências da Saúde.</hint>
                     <required></required>
                 </field>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>publisher</dc-element>
+                    <dc-qualifier>program</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Curso / Programa</label>
+                    <type-bind>bachelor thesis, article, journal article, conference object, book, book part, report</type-bind>
+                    <input-type value-pairs-name="pos_graduacao">dropdown</input-type>
+                    <hint>Selecione o Curso / Programa. Ex: Medicina, Arquitetura e Urbanismo, Engenharia Elétrica, etc.</hint>
+                    <required></required>
+                </field>
             </row>
 
-            <!-- Curso / Programa de Pós-Graduação -->
+            <!-- Programa de Pós-Graduação -->
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>publisher</dc-element>
                     <dc-qualifier>program</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Curso ou Programa de Pós-Graduação</label>
+                    <label>Pós-Graduação Stricto Sensu</label>
                     <type-bind>master thesis, doctoral thesis</type-bind>
                     <input-type value-pairs-name="pos_graduacao">dropdown</input-type>
                     <hint>Selecione o programa de Pós-gradução Stricto Sensu.</hint>
@@ -418,20 +430,6 @@
                 </field>
             </row>
 
-            <!-- ORCID -->
-            <row>
-                <field>
-                    <dc-schema>person</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>orcid</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>ID ORCID</label>
-                    <input-type>onebox</input-type>
-                    <hint>ORCID do pesquisador. Exemplo: &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org/XXXX-XXXX-XXXX-XXXX&lt;/a&gt;. Recomenda-se cadastro em &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org&lt;/a&gt;.</hint>
-                    <required></required>
-                </field>
-            </row>
-
             <!-- Lattes -->
             <row>
                 <field>
@@ -442,6 +440,20 @@
                     <label>ID Lattes</label>
                     <input-type>onebox</input-type>
                     <hint>URL do currículo Lattes. Exemplo: &lt;a href="https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar" target="_blank"&gt;https://lattes.cnpq.br/XXXXXXXXXXXXXXXX&lt;/a&gt;.</hint>
+                    <required></required>
+                </field>
+            </row>
+
+            <!-- ORCID -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>orcid</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ID ORCID</label>
+                    <input-type>onebox</input-type>
+                    <hint>ORCID do pesquisador. Exemplo: &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org/XXXX-XXXX-XXXX-XXXX&lt;/a&gt;. Recomenda-se cadastro em &lt;a href="https://orcid.org" target="_blank"&gt;https://orcid.org&lt;/a&gt;.</hint>
                     <required></required>
                 </field>
             </row>
