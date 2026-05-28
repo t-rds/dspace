@@ -245,8 +245,8 @@
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
             <list>
-                <!--Only find items, communities and collections-->
-                <value>(search.resourcetype:Item AND latestVersion:true) OR search.resourcetype:Collection OR search.resourcetype:Community</value>
+                <!-- Alterado: Garante que apenas Itens do tipo Publication (ou sem entidade definida) apareçam -->
+                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true AND (entityType_keyword:Publication OR (*:* -entityType_keyword:[* TO *])))</value>
                 <value>-withdrawn:true AND -discoverable:false</value>
             </list>
         </property>
@@ -347,6 +347,13 @@
 
     <bean id="communityConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
           scope="prototype" parent="defaultConfiguration">
+        <!-- Sobrescreve o filtro global para permitir visualizar Person e OrgUnit navegando pelas Comunidades -->
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true)</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
         <!--The sort filters for the discovery search-->
         <property name="searchSortConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
@@ -364,6 +371,13 @@
 
     <bean id="collectionConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
           scope="prototype" parent="defaultConfiguration">
+        <!-- Sobrescreve o filtro global para permitir visualizar Person e OrgUnit navegando pelas Coleções -->
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true)</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
         <!--The sort filters for the discovery search-->
         <property name="searchSortConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
