@@ -264,10 +264,8 @@
         <property name="sidebarFacets">
             <list>
                 <ref bean="searchFilterAuthor" />
-                <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterCnpq" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <!-- <ref bean="searchFilterHasGeospatialMetadata"/> -->
                 <ref bean="searchFilterEntityType"/>
@@ -281,9 +279,7 @@
             <list>
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
-                <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterSubject" />
-                <ref bean="searchFilterCnpq" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
@@ -292,14 +288,10 @@
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterAccessStatus" />
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
                 <ref bean="searchFilterGeospatialPoint"/>
             </list>
         </property>
@@ -320,8 +312,8 @@
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
             <list>
-                <!-- Alterado: Garante que apenas Itens do tipo Publication (ou sem entidade definida) apareçam -->
-                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true AND (entityType_keyword:Publication OR (*:* -entityType_keyword:[* TO *])))</value>
+                <!--Only find items, communities and collections-->
+                <value>(search.resourcetype:Item AND latestVersion:true) OR search.resourcetype:Collection OR search.resourcetype:Community</value>
                 <value>-withdrawn:true AND -discoverable:false</value>
             </list>
         </property>
@@ -356,11 +348,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -427,13 +414,6 @@
 
     <bean id="communityConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
           scope="prototype" parent="defaultConfiguration">
-        <!-- Sobrescreve o filtro global para permitir visualizar Person e OrgUnit navegando pelas Comunidades -->
-        <property name="defaultFilterQueries">
-            <list>
-                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true)</value>
-                <value>-withdrawn:true AND -discoverable:false</value>
-            </list>
-        </property>
         <!--The sort filters for the discovery search-->
         <property name="searchSortConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
@@ -451,13 +431,6 @@
 
     <bean id="collectionConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
           scope="prototype" parent="defaultConfiguration">
-        <!-- Sobrescreve o filtro global para permitir visualizar Person e OrgUnit navegando pelas Coleções -->
-        <property name="defaultFilterQueries">
-            <list>
-                <value>search.resourcetype:Collection OR search.resourcetype:Community OR (search.resourcetype:Item AND latestVersion:true)</value>
-                <value>-withdrawn:true AND -discoverable:false</value>
-            </list>
-        </property>
         <!--The sort filters for the discovery search-->
         <property name="searchSortConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
@@ -498,14 +471,10 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -562,11 +531,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -646,14 +610,10 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -710,11 +670,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -801,9 +756,6 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
@@ -811,7 +763,6 @@
                 <ref bean="searchFilterNotifyRelation" />
                 <ref bean="searchFilterNotifyEndorsement" />
                 <ref bean="searchFilterNotifyReview" />
-                <ref bean="searchFilterIsPublicationRelation" />
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -866,11 +817,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -983,11 +929,6 @@
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
@@ -1061,11 +1002,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -1145,11 +1081,6 @@
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
@@ -1227,11 +1158,6 @@
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
@@ -1304,11 +1230,6 @@
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
@@ -1387,11 +1308,6 @@
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
                             <property name="field" value="dc.description.abstract"/>
-                            <property name="maxSize" value="250"/>
-                            <property name="snippets" value="2"/>
-                        </bean>
-                        <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.resumo"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
@@ -1644,15 +1560,11 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -1719,15 +1631,11 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -1798,7 +1706,6 @@
                 <ref bean="searchFilterIsProjectOfDatasetRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfDatasetRelation"/>
                 <ref bean="searchFilterIsPublicationOfDatasetRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -1865,13 +1772,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfDatasetRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfDatasetRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfDatasetRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -3174,53 +3077,6 @@
         <property name="pageSize" value="10"/>
     </bean>
 
-    <bean id="searchFilterIsAdvisorOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isAdvisorOfPublication"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isAdvisorOfPublication.latestForDiscovery</value>
-                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isPublicationOf"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isAuthorOfPublication.latestForDiscovery</value>
-                <value>relation.isAdvisorOfPublication.latestForDiscovery</value>
-                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsCoAdvisorOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isCoAdvisorOfPublication"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsRefereeOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isRefereeOfPublication"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isRefereeOfPublication.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
     <bean id="searchFilterIsProjectOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="isProjectOfPublication"/>
         <property name="metadataFields">
@@ -3272,23 +3128,6 @@
             <list>
                 <value>dc.contributor.author</value>
                 <value>dc.creator</value>
-            </list>
-        </property>
-        <property name="facetLimit" value="5"/>
-        <property name="sortOrderSidebar" value="COUNT"/>
-        <property name="sortOrderFilterPage" value="COUNT"/>
-        <property name="isOpenByDefault" value="true"/>
-        <property name="pageSize" value="10"/>
-        <property name="exposeMinAndMaxValue" value="true"/>
-    </bean>
-
-    <bean id="searchFilterAdvisor" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="advisor"/>
-        <property name="metadataFields">
-            <list>
-                <value>dc.contributor.advisor</value>
-                <value>dc.contributor.advisorco</value>
-                <value>dc.contributor.referee</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
@@ -3372,19 +3211,6 @@
         <property name="sortOrderFilterPage" value="COUNT"/>
         <property name="splitter" value="::"/>
 
-    </bean>
-
-    <bean id="searchFilterCnpq" class="org.dspace.discovery.configuration.HierarchicalSidebarFacetConfiguration">
-        <property name="indexFieldName" value="subject_cnpq"/>
-        <property name="metadataFields">
-            <list>
-                <value>dc.subject.cnpq</value>
-            </list>
-        </property>
-        <property name="facetLimit" value="5"/>
-        <property name="sortOrderSidebar" value="COUNT"/>
-        <property name="sortOrderFilterPage" value="COUNT"/>
-        <property name="splitter" value="::"/>
     </bean>
 
     <bean id="searchFilterIssued" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -3618,42 +3444,6 @@
         <property name="metadataFields">
             <list>
                 <value>relation.isPublicationOfAuthor.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsPublicationOfAdvisorRelation"
-          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isPublicationOfAdvisor"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isPublicationOfAdvisor.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsPublicationOfCoAdvisorRelation"
-          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isPublicationOfCoAdvisor"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isPublicationOfCoAdvisor.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
-    <bean id="searchFilterIsPublicationOfRefereeRelation"
-          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isPublicationOfReferee"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isPublicationOfReferee.latestForDiscovery</value>
             </list>
         </property>
         <property name="isOpenByDefault" value="false"/>

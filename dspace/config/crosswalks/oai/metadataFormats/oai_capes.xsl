@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:capes="http://capes.gov.br/schema/oai_capes/1.0/"
+  xmlns:vivo="http://vivoweb.org/ontology/core#"
+  xmlns:schema="http://schema.org/"
+  xmlns:bibo="http://purl.org/ontology/bibo/"
+  exclude-result-prefixes="xsl">
+
+  <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+  <xsl:strip-space elements="*"/>
+
+  <xsl:template name="normalized-language">
+    <xsl:param name="lang"/>
+    <xsl:choose>
+      <xsl:when test="$lang = 'por' or $lang = 'pt' or $lang = 'pt-BR' or $lang = 'pt_BR'">pt-BR</xsl:when>
+      <xsl:when test="$lang = 'eng' or $lang = 'en' or $lang = 'en_US'">en</xsl:when>
+      <xsl:when test="$lang = 'spa' or $lang = 'es'">es</xsl:when>
+      <xsl:when test="$lang = 'fra' or $lang = 'fre' or $lang = 'fr'">fr</xsl:when>
+      <xsl:when test="$lang = 'deu' or $lang = 'ger' or $lang = 'de'">de</xsl:when>
+      <xsl:when test="$lang = 'ita' or $lang = 'it'">it</xsl:when>
+      <xsl:when test="$lang = 'jpn' or $lang = 'ja'">ja</xsl:when>
+      <xsl:when test="$lang = 'zho' or $lang = 'chi' or $lang = 'zh'">zh</xsl:when>
+      <xsl:when test="$lang = 'rus' or $lang = 'ru'">ru</xsl:when>
+      <xsl:when test="$lang = 'ara' or $lang = 'ar'">ar</xsl:when>
+      <xsl:when test="$lang = 'kor' or $lang = 'ko'">ko</xsl:when>
+      <xsl:otherwise><xsl:value-of select="$lang"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="language-attribute">
+    <xsl:param name="lang"/>
+    <xsl:if test="normalize-space($lang) != ''">
+      <xsl:attribute name="language">
+        <xsl:call-template name="normalized-language">
+          <xsl:with-param name="lang" select="$lang"/>
+        </xsl:call-template>
+      </xsl:attribute>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="/">
+    <xsl:variable name="m" select="/*"/>
+    <xsl:variable name="dc" select="$m/*[local-name()='element' and @name='dc'][1]"/>
+    <xsl:variable name="mainLanguage" select="normalize-space($dc/*[local-name()='element' and @name='language']//*[local-name()='field' and @name='value'][1])"/>
+    <xsl:variable name="docType" select="normalize-space((
+      $dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value']
+      |
+      $dc/*[local-name()='element' and @name='type']/*[local-name()='element' and @name != 'intellectual']//*[local-name()='field' and @name='value']
+    )[1])"/>
+
+    <oai_capes
+      xmlns="http://capes.gov.br/schema/oai_capes/1.0"
+      xmlns:dcterms="http://purl.org/dc/terms/"
+      xmlns:capes="http://capes.gov.br/schema/oai_capes/1.0/"
+      xmlns:vivo="http://vivoweb.org/ontology/core#"
+      xmlns:schema="http://schema.org/"
+      xmlns:bibo="http://purl.org/ontology/bibo/">
+
+      <!-- capes:outputType -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='type']/*[local-name()='element' and @name='intellectual']//*[local-name()='field' and @name='value']">
+        <capes:outputType><xsl:value-of select="normalize-space(.)"/></capes:outputType>
+      </xsl:for-each>
+
+      <!-- dcterms:type -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='type']/*[local-name()='element' and @name != 'intellectual']//*[local-name()='field' and @name='value']
+      ">
+        <dcterms:type><xsl:value-of select="normalize-space(.)"/></dcterms:type>
+      </xsl:for-each>
+
+      <!-- dcterms:title -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='title']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='title']/*[local-name()='element' and not(@name='alternative')]/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='title']/*[local-name()='element' and not(@name='alternative')]/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <xsl:variable name="storedLang" select="normalize-space(ancestor::*[local-name()='element'][1]/@name)"/>
+        <dcterms:title>
+          <xsl:call-template name="language-attribute">
+            <xsl:with-param name="lang">
+              <xsl:choose>
+                <xsl:when test="$storedLang != '' and $storedLang != 'title' and $storedLang != 'none'"><xsl:value-of select="$storedLang"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$mainLanguage"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:call-template>
+          <xsl:value-of select="normalize-space(.)"/>
+        </dcterms:title>
+      </xsl:for-each>
+
+      <!-- dcterms:alternative -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='title']/*[local-name()='element' and @name='alternative']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='title']/*[local-name()='element' and @name='alternative']/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <xsl:variable name="storedLang" select="normalize-space(ancestor::*[local-name()='element'][1]/@name)"/>
+        <dcterms:alternative>
+          <xsl:call-template name="language-attribute">
+            <xsl:with-param name="lang">
+              <xsl:choose>
+                <xsl:when test="$storedLang != '' and $storedLang != 'alternative' and $storedLang != 'none'"><xsl:value-of select="$storedLang"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$mainLanguage"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:call-template>
+          <xsl:value-of select="normalize-space(.)"/>
+        </dcterms:alternative>
+      </xsl:for-each>
+
+      <!-- dcterms:abstract (português) — dc.description.resumo -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='description']/*[local-name()='element' and @name='resumo']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='description']/*[local-name()='element' and @name='resumo']/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <xsl:variable name="storedLang" select="normalize-space(ancestor::*[local-name()='element'][1]/@name)"/>
+        <dcterms:abstract>
+          <xsl:call-template name="language-attribute">
+            <xsl:with-param name="lang">
+              <xsl:choose>
+                <xsl:when test="$storedLang != '' and $storedLang != 'resumo'"><xsl:value-of select="$storedLang"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$mainLanguage"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:call-template>
+          <xsl:value-of select="normalize-space(.)"/>
+        </dcterms:abstract>
+      </xsl:for-each>
+
+      <!-- dcterms:abstract (outro idioma) — dc.description.abstract -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='description']/*[local-name()='element' and @name='abstract']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='description']/*[local-name()='element' and @name='abstract']/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <xsl:variable name="storedLang" select="normalize-space(ancestor::*[local-name()='element'][1]/@name)"/>
+        <xsl:variable name="mainLang" select="normalize-space($dc/*[local-name()='element' and @name='language']//*[local-name()='field' and @name='value'][1])"/>
+        <xsl:variable name="lang">
+          <xsl:choose>
+            <xsl:when test="$storedLang != '' and $storedLang != 'abstract'">
+              <xsl:value-of select="$storedLang"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$mainLang"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <dcterms:abstract>
+          <xsl:call-template name="language-attribute">
+            <xsl:with-param name="lang" select="$lang"/>
+          </xsl:call-template>
+          <xsl:value-of select="normalize-space(.)"/>
+        </dcterms:abstract>
+      </xsl:for-each>
+
+      <!-- dcterms:subject Palavras-chave no idioma principal e em outros idiomas -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='subject']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='subject']/*[local-name()='element' and not(@name='cnpq') and not(@name='capes') and not(@name='researchLine')]/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='subject']/*[local-name()='element' and not(@name='cnpq') and not(@name='capes') and not(@name='researchLine')]/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <xsl:variable name="storedLang" select="normalize-space(ancestor::*[local-name()='element'][1]/@name)"/>
+        <xsl:variable name="subjectLang">
+          <xsl:choose>
+            <xsl:when test="$storedLang != '' and $storedLang != 'subject'"><xsl:value-of select="$storedLang"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$mainLanguage"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <dcterms:subject>
+          <xsl:call-template name="language-attribute">
+            <xsl:with-param name="lang" select="$subjectLang"/>
+          </xsl:call-template>
+          <xsl:value-of select="normalize-space(.)"/>
+        </dcterms:subject>
+      </xsl:for-each>
+
+      <!-- dcterms:language -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='language']//*[local-name()='field' and @name='value']">
+        <dcterms:language><xsl:value-of select="normalize-space(.)"/></dcterms:language>
+      </xsl:for-each>
+
+      <!-- capes:outputUri -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='identifier']/*[local-name()='element' and @name='uri']//*[local-name()='field' and @name='value']">
+        <capes:outputUri><xsl:value-of select="normalize-space(.)"/></capes:outputUri>
+      </xsl:for-each>
+
+      <!-- dcterms:bibliographicCitation -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='identifier']/*[local-name()='element' and @name='citation']//*[local-name()='field' and @name='value']">
+        <dcterms:bibliographicCitation><xsl:value-of select="normalize-space(.)"/></dcterms:bibliographicCitation>
+      </xsl:for-each>
+
+      <!-- schema:sponsor -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='description']/*[local-name()='element' and @name='sponsorship']//*[local-name()='field' and @name='value']">
+        <schema:sponsor><xsl:value-of select="normalize-space(.)"/></schema:sponsor>
+      </xsl:for-each>
+
+      <!-- dcterms:rights -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='rights']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='rights']/*[local-name()='element' and not(@name='uri')]/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='rights']/*[local-name()='element' and not(@name='uri')]/*[local-name()='element']/*[local-name()='field' and @name='value']
+      ">
+        <dcterms:rights><xsl:value-of select="normalize-space(.)"/></dcterms:rights>
+      </xsl:for-each>
+
+      <!-- dcterms:license -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='rights']/*[local-name()='element' and @name='uri']//*[local-name()='field' and @name='value']">
+        <dcterms:license><xsl:value-of select="normalize-space(.)"/></dcterms:license>
+      </xsl:for-each>
+
+      <!-- capes:hasProgram -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='program']//*[local-name()='field' and @name='value']">
+        <capes:hasProgram><xsl:value-of select="normalize-space(.)"/></capes:hasProgram>
+      </xsl:for-each>
+
+      <!-- capes:programCode -->
+      <xsl:if test="$docType = 'master thesis' or $docType = 'doctoral thesis'">
+        <xsl:variable name="program" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='program']//*[local-name()='field' and @name='value'][1])"/>
+        <xsl:variable name="explicitProgramCode" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value'][1])"/>
+        <xsl:choose>
+          <xsl:when test="$explicitProgramCode != ''">
+            <capes:programCode><xsl:value-of select="$explicitProgramCode"/></capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Atenção Integral à Saúde'">
+            <capes:programCode>42037018003P1</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Engenharia de Alimentos'">
+            <capes:programCode>42010012001P0</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Tecnologias Sustentáveis'">
+            <capes:programCode>42010012009P1</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Ensino Cientifico e Tecnológico'">
+            <capes:programCode>42010012006P2</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Ecologia'">
+            <capes:programCode>42010012004P0</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Educação'">
+            <capes:programCode>42010012008P5</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Direito'">
+            <capes:programCode>42010012003P3</capes:programCode>
+          </xsl:when>
+          <xsl:when test="$program = 'Pós-Graduação em Gestão Estratégica de Organizações'">
+            <capes:programCode>42010012007P9</capes:programCode>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:if>
+
+      <!-- dcterms:available -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='date']/*[local-name()='element' and @name='available']//*[local-name()='field' and @name='value']">
+        <xsl:variable name="date" select="normalize-space(.)"/>
+        <xsl:if test="string-length($date) >= 10 and substring($date, 5, 1) = '-' and substring($date, 8, 1) = '-'">
+          <dcterms:available><xsl:value-of select="substring($date, 1, 10)"/></dcterms:available>
+        </xsl:if>
+      </xsl:for-each>
+
+      <!-- capes:defenseDate -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='date']/*[local-name()='element' and @name='issued']//*[local-name()='field' and @name='value']">
+        <xsl:variable name="date" select="normalize-space(.)"/>
+        <xsl:if test="string-length($date) >= 10 and substring($date, 5, 1) = '-' and substring($date, 8, 1) = '-'">
+          <capes:defenseDate><xsl:value-of select="substring($date, 1, 10)"/></capes:defenseDate>
+        </xsl:if>
+      </xsl:for-each>
+
+      <!-- dcterms:relation -->
+      <xsl:for-each select="
+        $dc/*[local-name()='element' and @name='relation']/*[local-name()='field' and @name='value']
+        |
+        $dc/*[local-name()='element' and @name='relation']/*[local-name()='element' and @name != 'researchProject']//*[local-name()='field' and @name='value']
+      ">
+        <dcterms:relation><xsl:value-of select="normalize-space(.)"/></dcterms:relation>
+      </xsl:for-each>
+
+      <!-- capes:hasResearchProject Pesquisa vinculada -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='relation']/*[local-name()='element' and @name='researchProject']//*[local-name()='field' and @name='value']">
+        <capes:hasResearchProject><xsl:value-of select="normalize-space(.)"/></capes:hasResearchProject>
+      </xsl:for-each>
+
+      <!-- capes:hasResearchLine -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='subject']/*[local-name()='element' and @name='researchLine']//*[local-name()='field' and @name='value']">
+        <capes:hasResearchLine><xsl:value-of select="normalize-space(.)"/></capes:hasResearchLine>
+      </xsl:for-each>
+
+      <!-- capes:hasConcentrationArea -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='concentrationArea']//*[local-name()='field' and @name='value']">
+        <capes:hasConcentrationArea><xsl:value-of select="normalize-space(.)"/></capes:hasConcentrationArea>
+      </xsl:for-each>
+
+      <!-- bibo:numPages -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='format']/*[local-name()='element' and @name='extent']//*[local-name()='field' and @name='value']">
+        <bibo:numPages><xsl:value-of select="normalize-space(.)"/></bibo:numPages>
+      </xsl:for-each>
+
+      <!-- creator - dc.contributor.author populated from Person entities -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='author']//*[local-name()='field' and @name='value']">
+        <xsl:variable name="pos" select="position()"/>
+        <xsl:variable name="authority" select="following-sibling::*[local-name()='field' and @name='authority'][1]"/>
+        <creator>
+          <dcterms:creator>
+            <xsl:value-of select="normalize-space(.)"/>
+          </dcterms:creator>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+            <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
+          </xsl:for-each>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+            <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
+          </xsl:for-each>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+            <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
+          </xsl:for-each>
+
+          <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+            <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+          </xsl:for-each>
+        </creator>
+      </xsl:for-each>
+
+      <!-- advisor / coAdvisor / committeeMember populated from Person entities -->
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor'][1]">
+        <xsl:for-each select="*[local-name()='element' and @name='advisor']//*[local-name()='field' and @name='value']">
+          <xsl:variable name="pos" select="position()"/>
+          <xsl:variable name="authority" select="following-sibling::*[local-name()='field' and @name='authority'][1]"/>
+          <advisor>
+            <capes:advisor><xsl:value-of select="normalize-space(.)"/></capes:advisor>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+            </xsl:for-each>
+          </advisor>
+        </xsl:for-each>
+
+        <xsl:for-each select="*[local-name()='element' and @name='advisorco']//*[local-name()='field' and @name='value']">
+          <xsl:variable name="pos" select="position()"/>
+          <xsl:variable name="authority" select="following-sibling::*[local-name()='field' and @name='authority'][1]"/>
+          <coAdvisor>
+            <capes:coAdvisor><xsl:value-of select="normalize-space(.)"/></capes:coAdvisor>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+            </xsl:for-each>
+          </coAdvisor>
+        </xsl:for-each>
+
+        <xsl:for-each select="*[local-name()='element' and @name='referee']//*[local-name()='field' and @name='value']">
+          <xsl:variable name="pos" select="position()"/>
+          <xsl:variable name="authority" select="following-sibling::*[local-name()='field' and @name='authority'][1]"/>
+          <committeeMember>
+            <capes:committeeMember><xsl:value-of select="normalize-space(.)"/></capes:committeeMember>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
+            </xsl:for-each>
+
+            <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
+              <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
+            </xsl:for-each>
+          </committeeMember>
+        </xsl:for-each>
+      </xsl:for-each>
+
+    </oai_capes>
+  </xsl:template>
+
+</xsl:stylesheet>

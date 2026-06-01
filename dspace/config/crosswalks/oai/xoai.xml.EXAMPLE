@@ -22,7 +22,6 @@
             <Format ref="rioxx"/>
             <Format ref="datacite"/>
             <!--<Format ref="junii2" />-->
-            <Format ref="oaicapes"/>
             <Description>
                 This is the default context of the DSpace OAI-PMH data provider.
             </Description>
@@ -220,12 +219,6 @@
             <XSLT>metadataFormats/datacite.xsl</XSLT>
             <Namespace>http://datacite.org/schema/kernel-4</Namespace>
             <SchemaLocation>http://schema.datacite.org/meta/kernel-4/metadata.xsd</SchemaLocation>
-        </Format>
-        <Format id="oaicapes">
-            <Prefix>oai_capes</Prefix>
-            <XSLT>metadataFormats/oai_capes.xsl</XSLT>
-            <Namespace>http://capes.gov.br/schema/oai_capes/1.0</Namespace>
-            <SchemaLocation>http://capes.gov.br/schema/oai_capes/1.0</SchemaLocation>
         </Format>
     </Formats>
 

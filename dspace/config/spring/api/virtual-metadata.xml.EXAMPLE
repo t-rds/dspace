@@ -12,9 +12,6 @@
                  are to be added to the item that has a relationship with this relationship type-->
             <map>
                 <entry key="isAuthorOfPublication" value-ref="isAuthorOfPublicationMap"/>
-                <entry key="isAdvisorOfPublication"   value-ref="isAdvisorOfPublicationMap"/>
-                <entry key="isCoAdvisorOfPublication" value-ref="isCoAdvisorOfPublicationMap"/>
-                <entry key="isRefereeOfPublication"   value-ref="isRefereeOfPublicationMap"/>
                 <entry key="isEditorOfPublication" value-ref="isEditorOfPublicationMap"/>
                 <entry key="isOrgUnitOfPublication" value-ref="isOrgUnitOfPublicationMap"/>
                 <entry key="isPersonOfProject" value-ref="isPersonOfProjectMap"/>
@@ -40,7 +37,6 @@
                 <entry key="Person" value="f.entityType=Person,equals"/>
                 <entry key="Journal" value="f.entityType=Journal,equals"/>
                 <entry key="Dataset" value="f.entityType=Dataset,equals"/>
-                <entry key="OrgUnit" value="f.entityType=OrgUnit,equals"/>
             </map>
         </property>
     </bean>
@@ -49,11 +45,10 @@
          'dc.contributor.author' on the appropriate item with the values defined in the value-ref.
           This value-ref should be a bean of type VirtualMetadataConfiguration -->
     <util:map id="isAuthorOfPublicationMap">
-        <entry key="dc.contributor.author" value-ref="author_name"/>
-        <entry key="dc.contributor.authorOrcid"  value-ref="author_orcid"/>
-        <entry key="dc.contributor.authorLattes" value-ref="author_lattes"/>
-        <entry key="dc.contributor.authorRid"    value-ref="author_rid"/>
-        <entry key="dc.contributor.authorScopus" value-ref="author_scopus"/>
+        <entry key="dc.contributor.author" value-ref="publicationAuthor_author"/>
+        <entry key="person.identifier.orcid" value-ref="publicationAuthor_identifierOrcid"/>
+        <entry key="organization.identifier.ror" value-ref="publicationAuthor_identifierRor"/>
+        <entry key="dspace.relatedentity.type" value-ref="publicationAuthor_entityType"/>
     </util:map>
     <!--
          If the related item has:
@@ -61,214 +56,39 @@
             person.givenName = John
          Then the original item will have, in this case:
             dc.contributor.author = Smith, John -->
-    <bean class="org.dspace.content.virtual.Concatenate" id="author_name">
+    <bean class="org.dspace.content.virtual.Concatenate" id="publicationAuthor_author">
         <property name="fields">
             <util:list>
                 <value>person.familyName</value>
                 <value>person.givenName</value>
+                <value>organization.legalName</value>
             </util:list>
         </property>
         <property name="separator">
             <value>, </value>
         </property>
-        <property name="useForPlace"            value="true"/>
+        <property name="useForPlace" value="true"/>
         <property name="populateWithNameVariant" value="true"/>
     </bean>
-
-    <!-- Copia o ORCID da Person para a Publication -->
-    <bean class="org.dspace.content.virtual.Collected" id="author_orcid">
+    <bean class="org.dspace.content.virtual.Collected" id="publicationAuthor_identifierOrcid">
         <property name="fields">
             <util:list>
                 <value>person.identifier.orcid</value>
             </util:list>
         </property>
     </bean>
-
-    <!-- Copia o Lattes da Person para a Publication -->
-    <bean class="org.dspace.content.virtual.Collected" id="author_lattes">
+    <bean class="org.dspace.content.virtual.Collected" id="publicationAuthor_identifierRor">
         <property name="fields">
             <util:list>
-                <value>person.identifier.lattes</value>
+                <value>organization.identifier.ror</value>
             </util:list>
         </property>
     </bean>
 
-    <!-- Copia o ResearcherID da Person para a Publication -->
-    <bean class="org.dspace.content.virtual.Collected" id="author_rid">
+    <bean class="org.dspace.content.virtual.Collected" id="publicationAuthor_entityType">
         <property name="fields">
             <util:list>
-                <value>person.identifier.rid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <!-- Copia o Scopus Author ID da Person para a Publication -->
-    <bean class="org.dspace.content.virtual.Collected" id="author_scopus">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.scopus-author-id</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <util:map id="isAdvisorOfPublicationMap">
-        <entry key="dc.contributor.advisor"       value-ref="advisor_name"/>
-        <entry key="dc.contributor.advisorOrcid"  value-ref="advisor_orcid"/>
-        <entry key="dc.contributor.advisorLattes" value-ref="advisor_lattes"/>
-        <entry key="dc.contributor.advisorRid"    value-ref="advisor_rid"/>
-        <entry key="dc.contributor.advisorScopus" value-ref="advisor_scopus"/>
-    </util:map>
-
-    <bean class="org.dspace.content.virtual.Concatenate" id="advisor_name">
-        <property name="fields">
-            <util:list>
-                <value>person.familyName</value>
-                <value>person.givenName</value>
-            </util:list>
-        </property>
-        <property name="separator">
-            <value>, </value>
-        </property>
-        <property name="useForPlace"            value="true"/>
-        <property name="populateWithNameVariant" value="true"/>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="advisor_orcid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.orcid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="advisor_lattes">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.lattes</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="advisor_rid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.rid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="advisor_scopus">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.scopus-author-id</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <util:map id="isCoAdvisorOfPublicationMap">
-        <entry key="dc.contributor.advisorco"       value-ref="coadvisor_name"/>
-        <entry key="dc.contributor.advisorcoOrcid"  value-ref="coadvisor_orcid"/>
-        <entry key="dc.contributor.advisorcoLattes" value-ref="coadvisor_lattes"/>
-        <entry key="dc.contributor.advisorcoRid"    value-ref="coadvisor_rid"/>
-        <entry key="dc.contributor.advisorcoScopus" value-ref="coadvisor_scopus"/>
-    </util:map>
-
-    <bean class="org.dspace.content.virtual.Concatenate" id="coadvisor_name">
-        <property name="fields">
-            <util:list>
-                <value>person.familyName</value>
-                <value>person.givenName</value>
-            </util:list>
-        </property>
-        <property name="separator">
-            <value>, </value>
-        </property>
-        <property name="useForPlace"            value="true"/>
-        <property name="populateWithNameVariant" value="true"/>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="coadvisor_orcid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.orcid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="coadvisor_lattes">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.lattes</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="coadvisor_rid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.rid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="coadvisor_scopus">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.scopus-author-id</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <util:map id="isRefereeOfPublicationMap">
-        <entry key="dc.contributor.referee"       value-ref="referee_name"/>
-        <entry key="dc.contributor.refereeOrcid"  value-ref="referee_orcid"/>
-        <entry key="dc.contributor.refereeLattes" value-ref="referee_lattes"/>
-        <entry key="dc.contributor.refereeRid"    value-ref="referee_rid"/>
-        <entry key="dc.contributor.refereeScopus" value-ref="referee_scopus"/>
-    </util:map>
-
-    <bean class="org.dspace.content.virtual.Concatenate" id="referee_name">
-        <property name="fields">
-            <util:list>
-                <value>person.familyName</value>
-                <value>person.givenName</value>
-            </util:list>
-        </property>
-        <property name="separator">
-            <value>, </value>
-        </property>
-        <property name="useForPlace"            value="true"/>
-        <property name="populateWithNameVariant" value="true"/>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="referee_orcid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.orcid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="referee_lattes">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.lattes</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="referee_rid">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.rid</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <bean class="org.dspace.content.virtual.Collected" id="referee_scopus">
-        <property name="fields">
-            <util:list>
-                <value>person.identifier.scopus-author-id</value>
+                <value>dspace.entity.type</value>
             </util:list>
         </property>
     </bean>
@@ -320,42 +140,20 @@
      'dc.contributor.other' on the appropriate item with the values defined in the value-ref.
       This value-ref should be a bean of type VirtualMetadataConfiguration -->
     <util:map id="isOrgUnitOfPublicationMap">
-        <entry key="dc.publisher"            value-ref="orgunit_pub_name"/>
-        <entry key="dc.publisher.initials"   value-ref="orgunit_pub_initials"/>
-        <entry key="dc.publisher.ror"        value-ref="orgunit_pub_ror"/>
-        <entry key="dc.publisher.isni"       value-ref="orgunit_pub_isni"/>
+        <entry key="dc.contributor.other" value-ref="publicationOrgUnit_name"/>
+        <entry key="organization.identifier.ror" value-ref="publicationOrgUnit_ror"/>
     </util:map>
-    <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_name">
+    <bean class="org.dspace.content.virtual.Collected" id="publicationOrgUnit_name">
         <property name="fields">
             <util:list>
                 <value>organization.legalName</value>
             </util:list>
         </property>
     </bean>
-
-    <!-- Sigla (ex: URI Erechim) -->
-    <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_initials">
-        <property name="fields">
-            <util:list>
-                <value>organization.acronym</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <!-- Identificador ROR da instituição -->
-    <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_ror">
+    <bean class="org.dspace.content.virtual.Collected" id="publicationOrgUnit_ror">
         <property name="fields">
             <util:list>
                 <value>organization.identifier.ror</value>
-            </util:list>
-        </property>
-    </bean>
-
-    <!-- Identificador ISNI da instituição -->
-    <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_isni">
-        <property name="fields">
-            <util:list>
-                <value>organization.identifier.isni</value>
             </util:list>
         </property>
     </bean>

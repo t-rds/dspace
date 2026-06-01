@@ -121,13 +121,6 @@
         <qualifier>orcid</qualifier>
         <scope_note>Open Researcher and Contributor ID</scope_note>
     </dc-type>
-
-    <dc-type>
-        <schema>person</schema>
-        <element>identifier</element>
-        <qualifier>lattes</qualifier>
-        <scope_note>Lattes Platform identifier</scope_note>
-    </dc-type>
   
     <dc-type>
         <schema>person</schema>

@@ -125,132 +125,6 @@
 
   <dc-type>
 	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorco</qualifier>
-    <scope_note>Use primarily for thesis co-advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>referee</qualifier>
-    <scope_note>Use primarily for thesis committee members.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>authorOrcid</qualifier>
-    <scope_note>Virtual ORCID identifier for an author.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>authorLattes</qualifier>
-    <scope_note>Virtual Lattes identifier for an author.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>authorRid</qualifier>
-    <scope_note>Virtual ResearcherID for an author.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>authorScopus</qualifier>
-    <scope_note>Virtual Scopus Author ID for an author.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorOrcid</qualifier>
-    <scope_note>Virtual ORCID identifier for an advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorLattes</qualifier>
-    <scope_note>Virtual Lattes identifier for an advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorRid</qualifier>
-    <scope_note>Virtual ResearcherID for an advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorScopus</qualifier>
-    <scope_note>Virtual Scopus Author ID for an advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorcoOrcid</qualifier>
-    <scope_note>Virtual ORCID identifier for a co-advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorcoLattes</qualifier>
-    <scope_note>Virtual Lattes identifier for a co-advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorcoRid</qualifier>
-    <scope_note>Virtual ResearcherID for a co-advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>advisorcoScopus</qualifier>
-    <scope_note>Virtual Scopus Author ID for a co-advisor.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>refereeOrcid</qualifier>
-    <scope_note>Virtual ORCID identifier for a committee member.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>refereeLattes</qualifier>
-    <scope_note>Virtual Lattes identifier for a committee member.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>refereeRid</qualifier>
-    <scope_note>Virtual ResearcherID for a committee member.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>contributor</element>
-    <qualifier>refereeScopus</qualifier>
-    <scope_note>Virtual Scopus Author ID for a committee member.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
     <element>coverage</element>
     <qualifier>spatial</qualifier>
     <scope_note>Spatial characteristics of content.</scope_note>
@@ -425,13 +299,6 @@
     <scope_note>Abstract or summary.</scope_note>
   </dc-type>
 
-  <dc-type>
-	<schema>dc</schema>
-    <element>description</element>
-    <qualifier>resumo</qualifier>
-    <scope_note>Resumo da produção intelectual no idioma principal.</scope_note>
-  </dc-type>
-
   <!-- Used by system: do not remove -->
   <dc-type>
 	<schema>dc</schema>
@@ -528,55 +395,6 @@
 
   <dc-type>
 	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>initials</qualifier>
-    <scope_note>Virtual acronym or initials for the publishing organization.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>ror</qualifier>
-    <scope_note>Virtual ROR identifier for the publishing organization.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>isni</qualifier>
-    <scope_note>Virtual ISNI identifier for the publishing organization.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>department</qualifier>
-    <scope_note>Faculdade, instituto ou departamento responsável pela produção intelectual.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>program</qualifier>
-    <scope_note>Programa de pós-graduação ou curso vinculado à produção intelectual.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>programCode</qualifier>
-    <scope_note>Código do programa de pós-graduação no Sistema Nacional de Pós-Graduação/Sucupira.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>publisher</element>
-    <qualifier>concentrationArea</qualifier>
-    <scope_note>Área de concentração vinculada à produção intelectual.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
     <element>relation</element>
     <!-- unqualified -->
     <scope_note>Catch-all for references to other related items.</scope_note>
@@ -587,13 +405,6 @@
     <element>relation</element>
     <qualifier>isformatof</qualifier>
     <scope_note>References additional physical form.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>relation</element>
-    <qualifier>researchProject</qualifier>
-    <scope_note>Projeto de pesquisa vinculado à produção intelectual.</scope_note>
   </dc-type>
 
   <dc-type>
@@ -839,20 +650,6 @@
     <scope_note>Local controlled vocabulary; global vocabularies will receive specific qualifier.</scope_note>
   </dc-type>
 
-  <dc-type>
-	<schema>dc</schema>
-    <element>subject</element>
-    <qualifier>cnpq</qualifier>
-    <scope_note>Área do conhecimento segundo a classificação do CNPq.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>subject</element>
-    <qualifier>researchLine</qualifier>
-    <scope_note>Linha de pesquisa vinculada à produção intelectual.</scope_note>
-  </dc-type>
-
   <!-- Used by system: do not remove -->
   <dc-type>
 	<schema>dc</schema>
@@ -876,13 +673,6 @@
     <element>type</element>
     <!-- unqualified -->
     <scope_note>Nature or genre of content.</scope_note>
-  </dc-type>
-
-  <dc-type>
-	<schema>dc</schema>
-    <element>type</element>
-    <qualifier>intellectual</qualifier>
-    <scope_note>Categoria CAPES da produção intelectual.</scope_note>
   </dc-type>
 
 

@@ -22,12 +22,6 @@
 
     <dc-type>
         <schema>organization</schema>
-        <element>acronym</element>
-        <scope_note>Acronym or initials of the organization.</scope_note>
-    </dc-type>
-
-    <dc-type>
-        <schema>organization</schema>
         <element>foundingDate</element>
         <scope_note>The date that this organization was founded.</scope_note>
     </dc-type>

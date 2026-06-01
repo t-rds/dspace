@@ -109,55 +109,32 @@
 
         <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same name) which are
              defined in submission-forms.xml -->
+        <step-definition id="traditionalpageone" mandatory="true">
+            <heading>submit.progressbar.describe.stepone</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+        <step-definition id="traditionalpagetwo" mandatory="true">
+            <heading>submit.progressbar.describe.steptwo</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
         <step-definition id="publicationStep" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-
-        <!-- Formulário de Autor/Orientador/Coorientador/Membro de Banca (publicationPersonStep em submission-forms.xml)-->
-        <step-definition id="publicationPersonStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepPubPerson</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-
-        <!-- Formulário de metadados (publicationMetadataStep em submission-forms.xml) -->
-        <step-definition id="publicationMetadataStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepPubMetadata</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        
-        <!-- Formulário de Unidade Organizacional (publicationOrgUnitStep em submission-forms.xml) -->
-        <step-definition id="publicationOrgUnitStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepPubOrgUnit</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-
-        <!-- Formulário de perfil da Person (personStep em submission-forms.xml) -->
         <step-definition id="personStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepRights</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-
-        <!-- Formulário de unidade organizacional (orgUnitStep em submission-forms.xml) -->
-        <step-definition id="orgUnitStep" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
-
-        <!-- Formulário de direitos de acesso (rightsStep em submission-forms.xml) -->
-        <step-definition id="rightsStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-
         <step-definition id="projectStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepone</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+        <step-definition id="orgUnitStep" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
@@ -313,28 +290,78 @@
 
         <!--This "traditional" process defines the DEFAULT item submission process -->
         <submission-process name="traditional">
+            <!--Uncommment to display the SAMPLE step as your first step -->
+            <!--<step id="sample"/> -->
+
             <step id="collection"/>
-            <step id="publicationStep"/>
-            <step id="publicationPersonStep"/>
-            <step id="publicationMetadataStep"/>
-            <step id="publicationOrgUnitStep"/>
-            <step id="rightsStep"/>
-            <step id="duplicates"/>
+            <!-- To include the 'Show Identifiers' step, uncomment the line below. Make sure
+                 that identifiers.cfg and identifier-service.xml are properly configured. -->
+            <!--<step id="identifiers"/>-->
+            <!--Step will be to Describe the item. -->
+            <step id="traditionalpageone"/>
+            <step id="traditionalpagetwo"/>
+
+            <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
+            <!-- <step id="itemAccessConditions"/> -->
+
+            <!-- Uncomment this step to show when appropriate publisher policies retrieved from Open Policy Finder -->
+            <!-- <step id="opfPolicies"/> -->
+
+            <!-- To include the 'Duplicate Detection' step, uncomment the line below. Make sure
+                 that duplicate-detection.cfg is properly configured and items have been reindexed since
+                 enabling the feature -->
+            <!-- <step id="duplicates"/> -->
+
+            <!--Step will be COAR Notify services to the item -->
+            <!-- <step id="coarnotify"/> -->
+
+            <!--Step will be to Upload the item -->
             <step id="upload"/>
-            <!-- <step id="license"/> -->
+
+            <!-- <step id="extractionstep"/> -->
+
+            <!-- Uncomment this step to allow the user to select a Creative Commons License -->
+            <!-- <step id="cclicense"/> -->
+
+            <!--Step will be to Sign off on the required DSpace License agreement -->
+            <step id="license"/>
         </submission-process>
 
         <!-- Submission form used during item editing for traditional items (post-publication via EditItem system).
              Used by FULL mode for items without an entity type. Differs from "traditional" by excluding
              collection and license steps. -->
         <submission-process name="traditional-edit">
-            <step id="publicationStep"/>
-            <step id="publicationPersonStep"/>
-            <step id="publicationMetadataStep"/>
-            <step id="publicationOrgUnitStep"/>
-            <step id="rightsStep"/>
-            <step id="duplicates"/>
+            <!--Uncommment to display the SAMPLE step as your first step -->
+            <!--<step id="sample"/> -->
+
+            <!-- To include the 'Show Identifiers' step, uncomment the line below. Make sure
+                 that identifiers.cfg and identifier-service.xml are properly configured. -->
+            <!--<step id="identifiers"/>-->
+            <!--Step will be to Describe the item. -->
+            <step id="traditionalpageone"/>
+            <step id="traditionalpagetwo"/>
+
+            <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
+            <!-- <step id="itemAccessConditions"/> -->
+
+            <!-- Uncomment this step to show when appropriate publisher policies retrieved from Open Policy Finder -->
+            <!-- <step id="opfPolicies"/> -->
+
+            <!-- To include the 'Duplicate Detection' step, uncomment the line below. Make sure
+                 that duplicate-detection.cfg is properly configured and items have been reindexed since
+                 enabling the feature -->
+            <!-- <step id="duplicates"/> -->
+
+            <!--Step will be COAR Notify services to the item -->
+            <!-- <step id="coarnotify"/> -->
+
+            <!--Step will be to Upload the item -->
             <step id="upload"/>
+
+            <!-- <step id="extractionstep"/> -->
+
+            <!-- Uncomment this step to allow the user to select a Creative Commons License -->
+            <!-- <step id="cclicense"/> -->
         </submission-process>
 
         <!--
@@ -345,24 +372,19 @@
          -->
         <submission-process name="Publication">
             <step id="collection"/>
+            <!-- Publications use a custom first step, but share page 2 with "traditional" Item form -->
             <step id="publicationStep"/>
-            <step id="publicationPersonStep"/>
-            <step id="publicationMetadataStep"/>
-            <step id="publicationOrgUnitStep"/>
-            <step id="rightsStep"/>
-            <step id="duplicates"/>
+            <step id="traditionalpagetwo"/>
             <step id="upload"/>
+            <step id="license"/>
         </submission-process>
 
         <!-- Submission form used during Publication editing (post-publication via EditItem system).
              Differs from "Publication" by excluding collection and license steps. -->
         <submission-process name="publication-edit">
+            <!-- Publications use a custom first step, but share page 2 with "traditional" Item form -->
             <step id="publicationStep"/>
-            <step id="publicationPersonStep"/>
-            <step id="publicationMetadataStep"/>
-            <step id="publicationOrgUnitStep"/>
-            <step id="rightsStep"/>
-            <step id="duplicates"/>
+            <step id="traditionalpagetwo"/>
             <step id="upload"/>
         </submission-process>
 
@@ -373,7 +395,11 @@
         <submission-process name="Person">
             <step id="collection"/>
             <step id="personStep"/>
-            <step id="duplicates"/>
+            <!-- The custom-url step can be uncommented to allow the Person's custom URL (when enabled) to be
+                 customized during submission.-->
+            <!-- <step id="custom-url"/> -->
+            <step id="upload"/>
+            <step id="license"/>
         </submission-process>
 
         <!-- Submission form used during Person editing (post-publication via EditItem system).
@@ -381,7 +407,10 @@
              collection and license steps. -->
         <submission-process name="person-edit">
             <step id="personStep"/>
-            <step id="duplicates"/>
+            <!-- The custom-url step can be uncommented to allow the Person's custom URL (when enabled) to be
+                 customized during submission.-->
+            <!-- <step id="custom-url"/> -->
+            <step id="upload"/>
         </submission-process>
 
         <!-- Submission form used during Person editing by administrators (post-publication via EditItem system).
@@ -389,8 +418,11 @@
              metadata. Differs from "Person" by excluding collection and license steps. -->
         <submission-process name="admin-person-edit">
             <step id="personStep"/>
-            <step id="duplicates"/>
-            <step id="owner"/>
+            <!-- The custom-url step can be uncommented to allow the Person's custom URL (when enabled) to be
+                 customized during submission.-->
+            <!-- <step id="custom-url"/> -->
+            <step id="owner" />
+            <step id="upload" />
         </submission-process>
 
         <!--
@@ -418,14 +450,15 @@
         <submission-process name="OrgUnit">
             <step id="collection"/>
             <step id="orgUnitStep"/>
-            <step id="duplicates"/>
+            <step id="upload"/>
+            <step id="license"/>
         </submission-process>
 
         <!-- Submission form used during OrgUnit editing (post-publication via EditItem system).
              Differs from "OrgUnit" by excluding collection and license steps. -->
         <submission-process name="orgunit-edit">
             <step id="orgUnitStep"/>
-            <step id="duplicates"/>
+            <step id="upload"/>
         </submission-process>
 
         <!--
@@ -490,6 +523,7 @@
             <step id="collection"/>
             <!-- Datasets use a custom first step, but share page 2 with "traditional" Item form -->
             <step id="datasetStep"/>
+            <step id="traditionalpagetwo"/>
             <step id="upload"/>
             <step id="license"/>
         </submission-process>
@@ -499,6 +533,7 @@
         <submission-process name="dataset-edit">
             <!-- Datasets use a custom first step, but share page 2 with "traditional" Item form -->
             <step id="datasetStep"/>
+            <step id="traditionalpagetwo"/>
             <step id="upload"/>
         </submission-process>
 

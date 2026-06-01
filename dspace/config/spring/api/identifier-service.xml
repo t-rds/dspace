@@ -83,6 +83,7 @@
     on the filters defined in item-filters.xml, eg.
     Of course, you can use a filter on the VersionedDOIIdentifierProvider as well.
     -->
+    <!--
     <bean id="org.dspace.identifier.DOIIdentifierProvider"
         class="org.dspace.identifier.DOIIdentifierProvider"
         scope="singleton">
@@ -95,6 +96,7 @@
 
     <bean id="org.dspace.identifier.doi.DOIConnector"
 	    class="org.dspace.identifier.doi.crossref.CrossRefConnector"/>
+    -->
 
     <!-- The DOIConnector will handle the API calls to your DOI registration
          agency for the DOIIdentifierProvider. If your registration agency
