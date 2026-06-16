@@ -123,4 +123,106 @@
         <property name="virtualQualifier" value="orcid" />
     </bean>
 
+    <!-- CAPES authority export enhancers.
+         These fields replace the old relationship virtual metadata used by oai_capes.xsl. -->
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.author</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.orcid</value></list></property>
+        <property name="virtualQualifier" value="author-orcid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.author</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.lattes</value></list></property>
+        <property name="virtualQualifier" value="author-lattes" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.author</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.rid</value></list></property>
+        <property name="virtualQualifier" value="author-rid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.author</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.scopus-author-id</value></list></property>
+        <property name="virtualQualifier" value="author-scopus" />
+    </bean>
+
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisor</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.orcid</value></list></property>
+        <property name="virtualQualifier" value="advisor-orcid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisor</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.lattes</value></list></property>
+        <property name="virtualQualifier" value="advisor-lattes" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisor</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.rid</value></list></property>
+        <property name="virtualQualifier" value="advisor-rid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisor</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.scopus-author-id</value></list></property>
+        <property name="virtualQualifier" value="advisor-scopus" />
+    </bean>
+
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisorco</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.orcid</value></list></property>
+        <property name="virtualQualifier" value="advisorco-orcid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisorco</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.lattes</value></list></property>
+        <property name="virtualQualifier" value="advisorco-lattes" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisorco</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.rid</value></list></property>
+        <property name="virtualQualifier" value="advisorco-rid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.advisorco</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.scopus-author-id</value></list></property>
+        <property name="virtualQualifier" value="advisorco-scopus" />
+    </bean>
+
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.referee</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.orcid</value></list></property>
+        <property name="virtualQualifier" value="referee-orcid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.referee</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.lattes</value></list></property>
+        <property name="virtualQualifier" value="referee-lattes" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.referee</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.rid</value></list></property>
+        <property name="virtualQualifier" value="referee-rid" />
+    </bean>
+    <bean class="org.dspace.content.enhancer.impl.RelatedEntityItemEnhancer">
+        <property name="sourceEntityTypes" ref="researchOutputsEntityTypes" />
+        <property name="sourceItemMetadataFields"><list><value>dc.contributor.referee</value></list></property>
+        <property name="relatedItemMetadataFields"><list><value>person.identifier.scopus-author-id</value></list></property>
+        <property name="virtualQualifier" value="referee-scopus" />
+    </bean>
+
 </beans>

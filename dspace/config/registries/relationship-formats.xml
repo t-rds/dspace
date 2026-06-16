@@ -479,5 +479,149 @@
         <scope_note>Contains all uuids of DATASETS which link to the current PUBLICATION via a "latest" relationship. In other words, this stores all relationships pointing to the current PUBLICATION from any DATASET, implying that the PUBLICATION is marked as "latest". Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateOfPublication</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateOfPublication</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPublicationOfUndergraduate</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPublicationOfUndergraduate</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfPublication</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfPublication</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPublicationOfGraduateProgram</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPublicationOfGraduateProgram</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isOrgUnitOfUndergraduateProgram</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isOrgUnitOfUndergraduateProgram</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateProgramOfOrgUnit</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateProgramOfOrgUnit</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isOrgUnitOfGraduateProgram</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isOrgUnitOfGraduateProgram</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfOrgUnit</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfOrgUnit</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateProgramOfPerson</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isUndergraduateProgramOfPerson</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPersonOfUndergraduateProgram</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPersonOfUndergraduateProgram</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfPerson</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isGraduateProgramOfPerson</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPersonOfGraduateProgram</element>
+        <scope_note>Contains all uuids of related items for this relationship. Internally used by DSpace. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>relation</schema>
+        <element>isPersonOfGraduateProgram</element>
+        <qualifier>latestForDiscovery</qualifier>
+        <scope_note>Contains all uuids of related items for this relationship via a "latest" relationship. Internally used by DSpace to support versioning. Do not manually add, remove or edit values.</scope_note>
+    </dc-type>
+
 
 </dspace-dc-types>

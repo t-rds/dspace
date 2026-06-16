@@ -41,6 +41,9 @@
                 <value>person.givenName</value>
                 <value>person.familyName</value>
                 <value>organization.legalName</value>
+                <value>organization.name</value>
+                <value>organization.alternateName</value>
+                <value>organization.acronym</value>
             </list>
         </property>
     </bean>
@@ -51,7 +54,12 @@
                 <value>crisrp.name</value>
                 <value>person.name.variant</value>
                 <value>person.name.translated</value>
+                <value>person.givenName</value>
+                <value>person.familyName</value>
                 <value>organization.legalName</value>
+                <value>organization.name</value>
+                <value>organization.alternateName</value>
+                <value>organization.acronym</value>
             </list>
         </property>
     </bean>
@@ -142,6 +150,10 @@
                 <!-- Same as the "orgunit" configuration, but does NOT filter out older versions of items -->
                 <!-- Used to display related items on single-item pages, because a relationship does not always point to the latest version of the related item -->
                 <entry key="orgunit-relationships" value-ref="orgUnitRelationships"/>
+                <entry key="undergraduateprogram" value-ref="undergraduateProgram"/>
+                <entry key="undergraduateprogram-relationships" value-ref="undergraduateProgramRelationships"/>
+                <entry key="graduateprogram" value-ref="graduateProgram"/>
+                <entry key="graduateprogram-relationships" value-ref="graduateProgramRelationships"/>
 
                 <entry key="journalissue" value-ref="journalIssue"/>
                 <!-- Same as the "journalissue" configuration, but does NOT filter out older versions of items -->
@@ -198,6 +210,13 @@
                 <!-- Maps to: OrgUnit.isProjectOfOrgUnit (from Project → OrgUnit relationship) -->
                 <!-- Shows Projects participated by this OrgUnit -->
                 <entry key="RELATION.OrgUnit.projects" value-ref="relationOrgunitProjectsConfiguration"/>
+
+                <!-- Maps to: UndergraduateProgram.isPublicationOfUndergraduate (related publications) -->
+                <entry key="RELATION.UndergraduateProgram.isPublicationOfUndergraduate"
+                       value-ref="relationUndergraduateProgramPublicationsConfiguration"/>
+                <!-- Maps to: GraduateProgram.isPublicationOfGraduateProgram (related publications) -->
+                <entry key="RELATION.GraduateProgram.isPublicationOfGraduateProgram"
+                       value-ref="relationGraduateProgramPublicationsConfiguration"/>
 
                 <!-- COAR NOTIFY LDN MESSAGES configuration -->
                 <entry key="NOTIFY.incoming" value-ref="NOTIFY.incoming"/>
@@ -297,8 +316,20 @@
                 <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsPersonOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsProjectOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsDatasetOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsPublicationRelation"/>
                 <ref bean="searchFilterGeospatialPoint"/>
             </list>
@@ -503,8 +534,21 @@
                 <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsPersonOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsProjectOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsDatasetOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
@@ -653,6 +697,7 @@
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
@@ -811,6 +856,7 @@
                 <ref bean="searchFilterNotifyRelation" />
                 <ref bean="searchFilterNotifyEndorsement" />
                 <ref bean="searchFilterNotifyReview" />
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationRelation" />
             </list>
         </property>
@@ -1616,6 +1662,100 @@
         </property>
     </bean>
 
+    <!-- UndergraduateProgram -> Publications -->
+    <!-- Searches Publication items related through Publication.isUndergraduateOfPublication -->
+    <bean id="relationUndergraduateProgramPublicationsConfiguration"
+          class="org.dspace.discovery.configuration.DiscoveryRelatedItemConfiguration">
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterAdvisor" />
+                <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterType" />
+            </list>
+        </property>
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterTitle" />
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterAdvisor" />
+                <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterType" />
+                <ref bean="searchFilterIsPublicationOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfPublicationRelation"/>
+            </list>
+        </property>
+        <property name="searchSortConfiguration">
+            <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
+                <property name="sortFields">
+                    <list>
+                        <ref bean="sortDateIssuedDesc" />
+                        <ref bean="sortTitleAsc" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND latestVersion:true AND entityType_keyword:Publication</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- GraduateProgram -> Publications -->
+    <!-- Searches Publication items related through Publication.isGraduateProgramOfPublication -->
+    <bean id="relationGraduateProgramPublicationsConfiguration"
+          class="org.dspace.discovery.configuration.DiscoveryRelatedItemConfiguration">
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterAdvisor" />
+                <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterType" />
+            </list>
+        </property>
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterTitle" />
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterAdvisor" />
+                <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterType" />
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfPublicationRelation"/>
+            </list>
+        </property>
+        <property name="searchSortConfiguration">
+            <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
+                <property name="sortFields">
+                    <list>
+                        <ref bean="sortDateIssuedDesc" />
+                        <ref bean="sortTitleAsc" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND latestVersion:true AND entityType_keyword:Publication</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
+    </bean>
+
 
     <bean id="publication" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
         <property name="id" value="publication"/>
@@ -1649,9 +1789,13 @@
                 <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
@@ -1724,9 +1868,13 @@
                 <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfPublicationRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfPublicationRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
+                <ref bean="searchFilterIsPublicationOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
                 <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
@@ -1798,7 +1946,6 @@
                 <ref bean="searchFilterIsProjectOfDatasetRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfDatasetRelation"/>
                 <ref bean="searchFilterIsPublicationOfDatasetRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -1865,13 +2012,9 @@
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterIsAuthorOfDatasetRelation"/>
-                <ref bean="searchFilterIsAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsCoAdvisorOfPublicationRelation"/>
-                <ref bean="searchFilterIsRefereeOfPublicationRelation"/>
                 <ref bean="searchFilterIsProjectOfDatasetRelation"/>
                 <ref bean="searchFilterIsOrgUnitOfDatasetRelation"/>
                 <ref bean="searchFilterIsDatasetOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -2172,6 +2315,9 @@
                 <ref bean="searchFilterIsPersonOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsProjectOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsDatasetOfOrgUnitRelation"/>
             </list>
         </property>
@@ -2237,6 +2383,9 @@
                 <ref bean="searchFilterIsPersonOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsProjectOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfUndergraduateProgramRelation"/>
+                <ref bean="searchFilterIsUndergraduateProgramOfOrgUnitRelation"/>
+                <ref bean="searchFilterIsGraduateProgramOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsDatasetOfOrgUnitRelation"/>
             </list>
         </property>
@@ -2279,6 +2428,88 @@
         <property name="defaultRpp" value="10"/>
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
         <property name="spellCheckEnabled" value="true"/>
+    </bean>
+
+    <bean id="undergraduateProgram" parent="orgUnit" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
+          scope="prototype">
+        <property name="id" value="undergraduateProgram"/>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND latestVersion:true AND entityType_keyword:UndergraduateProgram</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="undergraduateProgramRelationships" parent="orgUnitRelationships"
+          class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
+        <property name="id" value="undergraduateProgramRelationships"/>
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterOrganizationLegalName"/>
+                <ref bean="searchFilterOrganizationAddressCountry"/>
+                <ref bean="searchFilterOrganizationAddressLocality"/>
+                <ref bean="searchFilterOrganizationFoundingDate"/>
+            </list>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND entityType_keyword:UndergraduateProgram</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="graduateProgram" parent="orgUnit" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
+          scope="prototype">
+        <property name="id" value="graduateProgram"/>
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterOrganizationLegalName"/>
+                <ref bean="searchFilterOrganizationAddressCountry"/>
+                <ref bean="searchFilterOrganizationAddressLocality"/>
+                <ref bean="searchFilterOrganizationFoundingDate"/>
+                <ref bean="searchFilterIsPersonOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfGraduateProgramRelation"/>
+            </list>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND latestVersion:true AND entityType_keyword:GraduateProgram</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="graduateProgramRelationships" parent="orgUnitRelationships"
+          class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
+        <property name="id" value="graduateProgramRelationships"/>
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterOrganizationLegalName"/>
+                <ref bean="searchFilterOrganizationAddressCountry"/>
+                <ref bean="searchFilterOrganizationAddressLocality"/>
+                <ref bean="searchFilterOrganizationFoundingDate"/>
+            </list>
+        </property>
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterOrganizationLegalName"/>
+                <ref bean="searchFilterOrganizationAddressCountry"/>
+                <ref bean="searchFilterOrganizationAddressLocality"/>
+                <ref bean="searchFilterOrganizationFoundingDate"/>
+                <ref bean="searchFilterIsPersonOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsPublicationOfGraduateProgramRelation"/>
+                <ref bean="searchFilterIsOrgUnitOfGraduateProgramRelation"/>
+            </list>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND entityType_keyword:GraduateProgram</value>
+                <value>-withdrawn:true AND -discoverable:false</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="journalIssue" class="org.dspace.discovery.configuration.DiscoveryConfiguration"
@@ -3186,19 +3417,6 @@
         <property name="pageSize" value="10"/>
     </bean>
 
-    <bean id="searchFilterIsPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="isPublicationOf"/>
-        <property name="metadataFields">
-            <list>
-                <value>relation.isAuthorOfPublication.latestForDiscovery</value>
-                <value>relation.isAdvisorOfPublication.latestForDiscovery</value>
-                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
-            </list>
-        </property>
-        <property name="isOpenByDefault" value="false"/>
-        <property name="pageSize" value="10"/>
-    </bean>
-
     <bean id="searchFilterIsCoAdvisorOfPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="isCoAdvisorOfPublication"/>
         <property name="metadataFields">
@@ -3215,6 +3433,19 @@
         <property name="metadataFields">
             <list>
                 <value>relation.isRefereeOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPublicationRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOf"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isAuthorOfPublication.latestForDiscovery</value>
+                <value>relation.isAdvisorOfPublication.latestForDiscovery</value>
+                <value>relation.isCoAdvisorOfPublication.latestForDiscovery</value>
             </list>
         </property>
         <property name="isOpenByDefault" value="false"/>
@@ -3288,6 +3519,22 @@
             <list>
                 <value>dc.contributor.advisor</value>
                 <value>dc.contributor.advisorco</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+        <property name="exposeMinAndMaxValue" value="true"/>
+    </bean>
+
+    <bean id="searchFilterContributor" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="contributor"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.contributor.advisor</value>
+                <value>dc.contributor.advisorco</value>
                 <value>dc.contributor.referee</value>
             </list>
         </property>
@@ -3319,6 +3566,7 @@
         <property name="indexFieldName" value="organization"/>
         <property name="metadataFields">
             <list>
+                <value>dc.publisher</value>
                 <value>oairecerif.author.affiliation</value>
                 <value>oairecerif.editor.affiliation</value>
             </list>
@@ -3710,13 +3958,17 @@
         <property name="exposeMinAndMaxValue" value="true"/>
     </bean>
 
-    <bean id="searchFilterOrganizationLegalName" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFilterOrganizationLegalName"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="organizationLegalName"/>
         <property name="metadataFields">
             <list>
-                <value>organization.legalName</value>
+                <value>organization.name</value>
             </list>
         </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
         <property name="isOpenByDefault" value="false"/>
         <property name="pageSize" value="10"/>
     </bean>
@@ -3749,6 +4001,112 @@
         <property name="metadataFields">
             <list>
                 <value>relation.isPublicationOfOrgUnit.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsUndergraduateProgramOfOrgUnitRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isUndergraduateProgramOfOrgUnit"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isUndergraduateProgramOfOrgUnit.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsGraduateProgramOfOrgUnitRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isGraduateProgramOfOrgUnit"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isGraduateProgramOfOrgUnit.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsOrgUnitOfUndergraduateProgramRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isOrgUnitOfUndergraduateProgram"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isOrgUnitOfUndergraduateProgram.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPublicationOfUndergraduateProgramRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOfUndergraduate"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPublicationOfUndergraduate.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsUndergraduateProgramOfPublicationRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isUndergraduateOfPublication"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isUndergraduateOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPersonOfGraduateProgramRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPersonOfGraduateProgram"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPersonOfGraduateProgram.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsPublicationOfGraduateProgramRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isPublicationOfGraduateProgram"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isPublicationOfGraduateProgram.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsOrgUnitOfGraduateProgramRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isOrgUnitOfGraduateProgram"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isOrgUnitOfGraduateProgram.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsGraduateProgramOfPublicationRelation"
+          class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isGraduateProgramOfPublication"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isGraduateProgramOfPublication.latestForDiscovery</value>
             </list>
         </property>
         <property name="isOpenByDefault" value="false"/>

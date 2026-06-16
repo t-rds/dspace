@@ -252,6 +252,13 @@
   <dc-type>
 	<schema>dc</schema>
     <element>coverage</element>
+    <!-- unqualified -->
+    <scope_note>Spatial or temporal characteristics of content.</scope_note>
+  </dc-type>
+
+  <dc-type>
+	<schema>dc</schema>
+    <element>coverage</element>
     <qualifier>spatial</qualifier>
     <scope_note>Spatial characteristics of content.</scope_note>
   </dc-type>
@@ -275,6 +282,13 @@
     <element>date</element>
     <!-- unqualified -->
     <scope_note>Use qualified form if possible.</scope_note>
+  </dc-type>
+
+  <dc-type>
+	<schema>dc</schema>
+    <element>description</element>
+    <qualifier>note</qualifier>
+    <scope_note>Additional notes about the item.</scope_note>
   </dc-type>
 
   <!-- Used by system: do not remove -->

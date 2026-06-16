@@ -225,39 +225,9 @@
       </xsl:for-each>
 
       <!-- capes:programCode -->
-      <xsl:if test="$docType = 'master thesis' or $docType = 'doctoral thesis'">
-        <xsl:variable name="program" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='program']//*[local-name()='field' and @name='value'][1])"/>
-        <xsl:variable name="explicitProgramCode" select="normalize-space($dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value'][1])"/>
-        <xsl:choose>
-          <xsl:when test="$explicitProgramCode != ''">
-            <capes:programCode><xsl:value-of select="$explicitProgramCode"/></capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Atenção Integral à Saúde'">
-            <capes:programCode>42037018003P1</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Engenharia de Alimentos'">
-            <capes:programCode>42010012001P0</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Tecnologias Sustentáveis'">
-            <capes:programCode>42010012009P1</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Ensino Cientifico e Tecnológico'">
-            <capes:programCode>42010012006P2</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Ecologia'">
-            <capes:programCode>42010012004P0</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Educação'">
-            <capes:programCode>42010012008P5</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Direito'">
-            <capes:programCode>42010012003P3</capes:programCode>
-          </xsl:when>
-          <xsl:when test="$program = 'Pós-Graduação em Gestão Estratégica de Organizações'">
-            <capes:programCode>42010012007P9</capes:programCode>
-          </xsl:when>
-        </xsl:choose>
-      </xsl:if>
+      <xsl:for-each select="$dc/*[local-name()='element' and @name='publisher']/*[local-name()='element' and @name='programCode']//*[local-name()='field' and @name='value']">
+        <capes:programCode><xsl:value-of select="normalize-space(.)"/></capes:programCode>
+      </xsl:for-each>
 
       <!-- dcterms:available -->
       <xsl:for-each select="$dc/*[local-name()='element' and @name='date']/*[local-name()='element' and @name='available']//*[local-name()='field' and @name='value']">
@@ -316,15 +286,12 @@
           <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
             <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
           </xsl:for-each>
-
           <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
             <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
           </xsl:for-each>
-
           <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
             <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
           </xsl:for-each>
-
           <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='authorScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
             <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
           </xsl:for-each>
@@ -342,15 +309,12 @@
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
             </xsl:for-each>
@@ -366,15 +330,12 @@
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <capes:researcherId><xsl:value-of select="normalize-space(.)"/></capes:researcherId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='advisorcoScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
             </xsl:for-each>
@@ -390,15 +351,12 @@
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeLattes']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <capes:lattesId><xsl:value-of select="normalize-space(.)"/></capes:lattesId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeOrcid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:orcidId><xsl:value-of select="normalize-space(.)"/></vivo:orcidId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeRid']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:researcherId><xsl:value-of select="normalize-space(.)"/></vivo:researcherId>
             </xsl:for-each>
-
             <xsl:for-each select="$dc/*[local-name()='element' and @name='contributor']/*[local-name()='element' and @name='refereeScopus']//*[local-name()='field' and @name='value'][following-sibling::*[local-name()='field' and @name='authority'][1] = $authority or (not($authority) and position() = $pos)]">
               <vivo:scopusId><xsl:value-of select="normalize-space(.)"/></vivo:scopusId>
             </xsl:for-each>

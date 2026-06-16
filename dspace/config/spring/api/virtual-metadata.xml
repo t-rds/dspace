@@ -17,9 +17,15 @@
                 <entry key="isRefereeOfPublication"   value-ref="isRefereeOfPublicationMap"/>
                 <entry key="isEditorOfPublication" value-ref="isEditorOfPublicationMap"/>
                 <entry key="isOrgUnitOfPublication" value-ref="isOrgUnitOfPublicationMap"/>
+                <entry key="isUndergraduateOfPublication" value-ref="isUndergraduateOfPublicationMap"/>
+                <entry key="isGraduateProgramOfPublication" value-ref="isGraduateProgramOfPublicationMap"/>
+                <entry key="isOrgUnitOfUndergraduateProgram" value-ref="isOrgUnitOfUndergraduateProgramMap"/>
+                <entry key="isOrgUnitOfGraduateProgram" value-ref="isOrgUnitOfGraduateProgramMap"/>
                 <entry key="isPersonOfProject" value-ref="isPersonOfProjectMap"/>
                 <entry key="isOrgUnitOfProject" value-ref="isOrgUnitOfProjectMap"/>
                 <entry key="isOrgUnitOfPerson" value-ref="isOrgUnitOfPersonMap"/>
+                <entry key="isUndergraduateProgramOfPerson" value-ref="isUndergraduateProgramOfPersonMap"/>
+                <entry key="isGraduateProgramOfPerson" value-ref="isGraduateProgramOfPersonMap"/>
                 <entry key="isJournalVolumeOfIssue" value-ref="isJournalVolumeOfIssueMap"/>
                 <entry key="isJournalOfVolume" value-ref="isJournalOfVolumeMap"/>
                 <entry key="isVolumeOfJournal" value-ref="isVolumeOfJournalMap"/>
@@ -41,6 +47,8 @@
                 <entry key="Journal" value="f.entityType=Journal,equals"/>
                 <entry key="Dataset" value="f.entityType=Dataset,equals"/>
                 <entry key="OrgUnit" value="f.entityType=OrgUnit,equals"/>
+                <entry key="UndergraduateProgram" value="f.entityType=UndergraduateProgram,equals"/>
+                <entry key="GraduateProgram" value="f.entityType=GraduateProgram,equals"/>
             </map>
         </property>
     </bean>
@@ -333,7 +341,7 @@
         </property>
     </bean>
 
-    <!-- Sigla (ex: URI Erechim) -->
+    <!-- Sigla/iniciais do câmpus (ex: URI Erechim) -->
     <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_initials">
         <property name="fields">
             <util:list>
@@ -356,6 +364,58 @@
         <property name="fields">
             <util:list>
                 <value>organization.identifier.isni</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isUndergraduateOfPublicationMap">
+        <entry key="dc.publisher.program" value-ref="undergraduateprogram_pub_name"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="undergraduateprogram_pub_name">
+        <property name="fields">
+            <util:list>
+                <value>organization.name</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isGraduateProgramOfPublicationMap">
+        <entry key="dc.publisher.program" value-ref="graduateprogram_pub_name"/>
+        <entry key="dc.publisher.programCode" value-ref="graduateprogram_pub_code"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="graduateprogram_pub_name">
+        <property name="fields">
+            <util:list>
+                <value>organization.name</value>
+            </util:list>
+        </property>
+    </bean>
+    <bean class="org.dspace.content.virtual.Collected" id="graduateprogram_pub_code">
+        <property name="fields">
+            <util:list>
+                <value>organization.identifier.capes</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isOrgUnitOfUndergraduateProgramMap">
+        <entry key="organization.parentOrganization" value-ref="course_orgunit_name"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="course_orgunit_name">
+        <property name="fields">
+            <util:list>
+                <value>organization.legalName</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isOrgUnitOfGraduateProgramMap">
+        <entry key="organization.parentOrganization" value-ref="graduateprogram_orgunit_name"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="graduateprogram_orgunit_name">
+        <property name="fields">
+            <util:list>
+                <value>organization.legalName</value>
             </util:list>
         </property>
     </bean>
@@ -404,6 +464,28 @@
         <entry key="person.contributor.other" value-ref="personProject_other"/>
     </util:map>
     <bean class="org.dspace.content.virtual.Collected" id="personProject_other">
+        <property name="fields">
+            <util:list>
+                <value>organization.legalName</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isUndergraduateProgramOfPersonMap">
+        <entry key="person.affiliation.name" value-ref="person_undergraduateprogram_name"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="person_undergraduateprogram_name">
+        <property name="fields">
+            <util:list>
+                <value>organization.legalName</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <util:map id="isGraduateProgramOfPersonMap">
+        <entry key="person.affiliation.name" value-ref="person_graduateprogram_name"/>
+    </util:map>
+    <bean class="org.dspace.content.virtual.Collected" id="person_graduateprogram_name">
         <property name="fields">
             <util:list>
                 <value>organization.legalName</value>
