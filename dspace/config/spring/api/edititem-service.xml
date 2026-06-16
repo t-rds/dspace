@@ -163,6 +163,32 @@
                         </bean>
                     </list>
                 </entry>
+                <entry key="undergraduateprogram">
+                    <list>
+                        <bean class="org.dspace.content.edit.EditItemMode">
+                            <property name="name" value="FULL" />
+                            <property name="security">
+                                <value type="org.dspace.content.security.CrisSecurity">
+                                    ITEM_ADMIN
+                                </value>
+                            </property>
+                            <property name="submissionDefinition" value="undergraduateprogram-edit" />
+                        </bean>
+                    </list>
+                </entry>
+                <entry key="graduateprogram">
+                    <list>
+                        <bean class="org.dspace.content.edit.EditItemMode">
+                            <property name="name" value="FULL" />
+                            <property name="security">
+                                <value type="org.dspace.content.security.CrisSecurity">
+                                    ITEM_ADMIN
+                                </value>
+                            </property>
+                            <property name="submissionDefinition" value="graduateprogram-edit" />
+                        </bean>
+                    </list>
+                </entry>
 <!--                CRIS Entity: Patent-->
 <!--                This configuration refers to the "patent" entity type from CRIS.-->
 <!--                Before enabling, ensure you have configured the patent entity type in your-->

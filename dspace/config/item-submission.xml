@@ -60,6 +60,8 @@
         <name-map collection-entity-type="Person" submission-name="Person"/>
         <name-map collection-entity-type="Project" submission-name="Project"/>
         <name-map collection-entity-type="OrgUnit" submission-name="OrgUnit"/>
+        <name-map collection-entity-type="UndergraduateProgram" submission-name="UndergraduateProgram"/>
+        <name-map collection-entity-type="GraduateProgram" submission-name="GraduateProgram"/>
         <name-map collection-entity-type="Journal" submission-name="Journal"/>
         <name-map collection-entity-type="JournalVolume" submission-name="JournalVolume"/>
         <name-map collection-entity-type="JournalIssue" submission-name="JournalIssue"/>
@@ -138,13 +140,25 @@
 
         <!-- Formulário de perfil da Person (personStep em submission-forms.xml) -->
         <step-definition id="personStep" mandatory="true">
-            <heading>submit.progressbar.describe.stepRights</heading>
+            <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
 
         <!-- Formulário de unidade organizacional (orgUnitStep em submission-forms.xml) -->
         <step-definition id="orgUnitStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepone</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="undergraduateProgramStep" mandatory="true">
+            <heading>submit.progressbar.describe.stepone</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="graduateProgramStep" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
@@ -195,12 +209,6 @@
             <scope visibilityOutside="read-only">submission</scope>
         </step-definition>
 
-        <!-- This optional step may allow the user to select a Creative Commons license -->
-        <step-definition id="cclicense" mandatory="false">
-            <heading>submit.progressbar.CClicense</heading>
-            <processing-class>org.dspace.app.rest.submit.step.CCLicenseStep</processing-class>
-	        <type>cclicense</type>
-        </step-definition>
         <step-definition id="custom-url">
             <heading>submit.progressbar.CustomUrlStep</heading>
             <processing-class>org.dspace.app.rest.submit.step.CustomUrlStep</processing-class>
@@ -231,40 +239,6 @@
             <heading>submit.progressbar.ExtractMetadataStep</heading>
             <processing-class>org.dspace.app.rest.submit.step.ExtractMetadataStep</processing-class>
             <type>extract</type>
-        </step-definition>
-
-        <!-- Openaire submission steps/forms -->
-        <step-definition id="openaireProjectForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="openairePersonForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="openaireOrganizationForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="openairePublicationPageoneForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-        <step-definition id="openairePublicationPagetwoForm" mandatory="true">
-            <heading>submit.progressbar.describe.stepone</heading>
-            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
-            <type>submission-form</type>
-        </step-definition>
-
-        <!-- This is the Sample/Fake Step which is used for testing only -->
-        <step-definition id="sample">
-            <heading>Sample</heading>
-            <processing-class>org.dspace.submit.step.SampleStep</processing-class>
-            <type>sample</type>
         </step-definition>
 
         <step-definition id="opfPolicies" mandatory="true">
@@ -389,8 +363,8 @@
              metadata. Differs from "Person" by excluding collection and license steps. -->
         <submission-process name="admin-person-edit">
             <step id="personStep"/>
+            <!-- <step id="owner"/> -->
             <step id="duplicates"/>
-            <step id="owner"/>
         </submission-process>
 
         <!--
@@ -425,6 +399,29 @@
              Differs from "OrgUnit" by excluding collection and license steps. -->
         <submission-process name="orgunit-edit">
             <step id="orgUnitStep"/>
+        </submission-process>
+
+        <!-- Submission form for UndergraduateProgram (Cursos de gradução) -->
+        <submission-process name="UndergraduateProgram">
+            <step id="collection"/>
+            <step id="undergraduateProgramStep"/>
+            <step id="duplicates"/>
+        </submission-process>
+
+        <submission-process name="undergraduateprogram-edit">
+            <step id="undergraduateProgramStep"/>
+            <step id="duplicates"/>
+        </submission-process>
+
+        <!-- Submission form for GraduateProgram (Programas de Pós-graduação) -->
+        <submission-process name="GraduateProgram">
+            <step id="collection"/>
+            <step id="graduateProgramStep"/>
+            <step id="duplicates"/>
+        </submission-process>
+
+        <submission-process name="graduateprogram-edit">
+            <step id="graduateProgramStep"/>
             <step id="duplicates"/>
         </submission-process>
 
@@ -502,37 +499,6 @@
             <step id="upload"/>
         </submission-process>
 
-        <!-- Openaire submission processes -->
-        <submission-process name="openairePublicationSubmission">
-            <step id="collection"/>
-
-            <!--Step will be to Describe the item. -->
-            <step id="openairePublicationPageoneForm"/>
-            <step id="openairePublicationPagetwoForm"/>
-
-            <!--Step will be to Upload the item -->
-            <!-- step id="upload-with-embargo"/-->
-            <step id="upload"/>
-
-            <!--Step will be to Sign off on the License -->
-            <step id="license"/>
-
-            <!-- Step allows the user to select a Creative Commons License -->
-            <!-- Required for OpenAIREv4 support -->
-            <step id="cclicense"/>
-        </submission-process>
-        <submission-process name="openairePersonSubmission">
-            <step id="collection"/>
-            <step id="openairePersonForm"/>
-        </submission-process>
-        <submission-process name="openaireProjectSubmission">
-            <step id="collection"/>
-            <step id="openaireProjectForm"/>
-        </submission-process>
-        <submission-process name="openaireOrganizationSubmission">
-            <step id="collection"/>
-            <step id="openaireOrganizationForm"/>
-        </submission-process>
     </submission-definitions>
 
 </item-submission>

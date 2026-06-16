@@ -97,6 +97,58 @@
         <copyToLeft>true</copyToLeft>
     </type>
     <type>
+        <leftType>Publication</leftType>
+        <rightType>UndergraduateProgram</rightType>
+        <leftwardType>isUndergraduateOfPublication</leftwardType>
+        <rightwardType>isPublicationOfUndergraduate</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+        <copyToLeft>true</copyToLeft>
+    </type>
+    <type>
+        <leftType>Publication</leftType>
+        <rightType>GraduateProgram</rightType>
+        <leftwardType>isGraduateProgramOfPublication</leftwardType>
+        <rightwardType>isPublicationOfGraduateProgram</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+        <copyToLeft>true</copyToLeft>
+    </type>
+    <type>
+        <leftType>UndergraduateProgram</leftType>
+        <rightType>OrgUnit</rightType>
+        <leftwardType>isOrgUnitOfUndergraduateProgram</leftwardType>
+        <rightwardType>isUndergraduateProgramOfOrgUnit</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+        <copyToLeft>true</copyToLeft>
+    </type>
+    <type>
+        <leftType>GraduateProgram</leftType>
+        <rightType>OrgUnit</rightType>
+        <leftwardType>isOrgUnitOfGraduateProgram</leftwardType>
+        <rightwardType>isGraduateProgramOfOrgUnit</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+        <copyToLeft>true</copyToLeft>
+    </type>
+    <type>
         <leftType>Person</leftType>
         <rightType>Project</rightType>
         <leftwardType>isProjectOfPerson</leftwardType>
@@ -113,6 +165,30 @@
         <rightType>OrgUnit</rightType>
         <leftwardType>isOrgUnitOfPerson</leftwardType>
         <rightwardType>isPersonOfOrgUnit</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+    <type>
+        <leftType>Person</leftType>
+        <rightType>UndergraduateProgram</rightType>
+        <leftwardType>isUndergraduateProgramOfPerson</leftwardType>
+        <rightwardType>isPersonOfUndergraduateProgram</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+    <type>
+        <leftType>Person</leftType>
+        <rightType>GraduateProgram</rightType>
+        <leftwardType>isGraduateProgramOfPerson</leftwardType>
+        <rightwardType>isPersonOfGraduateProgram</rightwardType>
         <leftCardinality>
             <min>0</min>
         </leftCardinality>

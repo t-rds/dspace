@@ -28,6 +28,12 @@
 
     <dc-type>
         <schema>organization</schema>
+        <element>type</element>
+        <scope_note>Type of organizational unit, e.g. Campus.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>organization</schema>
         <element>foundingDate</element>
         <scope_note>The date that this organization was founded.</scope_note>
     </dc-type>
@@ -79,6 +85,13 @@
         <qualifier>ror</qualifier>
         <scope_note>Research Organization Registry</scope_note>
     </dc-type>
+
+    <dc-type>
+        <schema>organization</schema>
+        <element>identifier</element>
+        <qualifier>capes</qualifier>
+        <scope_note>CAPES/Sucupira identifier for graduate programs.</scope_note>
+    </dc-type>
   
     <dc-type>
         <schema>organization</schema>
@@ -104,6 +117,12 @@
         <schema>organization</schema>
         <element>url</element>
         <scope_note>Url of the organization.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>organization</schema>
+        <element>name</element>
+        <scope_note>The official name.</scope_note>
     </dc-type>
 
 </dspace-dc-types>
