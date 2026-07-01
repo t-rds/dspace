@@ -1672,6 +1672,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterCampus" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterType" />
@@ -1684,6 +1685,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterCampus" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterType" />
@@ -1719,6 +1721,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterCampus" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterType" />
@@ -1731,6 +1734,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterAdvisor" />
                 <ref bean="searchFilterOrgUnit" />
+                <ref bean="searchFilterCampus" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterType" />
@@ -1780,6 +1784,7 @@
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterCampus"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -1859,6 +1864,7 @@
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
+                <ref bean="searchFilterCampus"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -3575,6 +3581,21 @@
         <property name="sortOrderSidebar" value="COUNT"/>
         <property name="sortOrderFilterPage" value="COUNT"/>
         <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+        <property name="exposeMinAndMaxValue" value="true"/>
+    </bean>
+
+    <bean id="searchFilterCampus" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="campus"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.publisher.initials</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+        <property name="isOpenByDefault" value="false"/>
         <property name="pageSize" value="10"/>
         <property name="exposeMinAndMaxValue" value="true"/>
     </bean>

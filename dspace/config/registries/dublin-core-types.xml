@@ -564,6 +564,13 @@
   <dc-type>
 	<schema>dc</schema>
     <element>publisher</element>
+    <qualifier>locality</qualifier>
+    <scope_note>Virtual locality/city for the publishing organization.</scope_note>
+  </dc-type>
+
+  <dc-type>
+	<schema>dc</schema>
+    <element>publisher</element>
     <qualifier>department</qualifier>
     <scope_note>Faculdade, instituto ou departamento responsável pela produção intelectual.</scope_note>
   </dc-type>

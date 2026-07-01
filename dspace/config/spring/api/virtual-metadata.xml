@@ -332,6 +332,7 @@
         <entry key="dc.publisher.initials"   value-ref="orgunit_pub_initials"/>
         <entry key="dc.publisher.ror"        value-ref="orgunit_pub_ror"/>
         <entry key="dc.publisher.isni"       value-ref="orgunit_pub_isni"/>
+        <entry key="dc.publisher.locality"   value-ref="orgunit_pub_locality"/>
     </util:map>
     <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_name">
         <property name="fields">
@@ -364,6 +365,14 @@
         <property name="fields">
             <util:list>
                 <value>organization.identifier.isni</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean class="org.dspace.content.virtual.Collected" id="orgunit_pub_locality">
+        <property name="fields">
+            <util:list>
+                <value>organization.address.addressLocality</value>
             </util:list>
         </property>
     </bean>
