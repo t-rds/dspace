@@ -1,7 +1,7 @@
 ARG JDK_VERSION=21
 
 # ===============================
-# 🧱 Etapa 1 - Build com Maven
+# Build com Maven
 # ===============================
 FROM maven:3.9.9-eclipse-temurin-${JDK_VERSION} AS build
 ARG TARGET_DIR=dspace-installer
@@ -24,7 +24,7 @@ RUN rm -rf /install/webapps/server/
 
 
 # ===============================
-# 🧰 Etapa 2 - Instalação com Ant
+# Instalação com Ant
 # ===============================
 FROM eclipse-temurin:${JDK_VERSION}-jdk-jammy AS ant_build
 
@@ -42,7 +42,7 @@ RUN ant init_installation update_configs update_code update_webapps
 
 
 # ===============================
-# 🚀 Etapa 3 - Runtime
+# Runtime
 # ===============================
 FROM eclipse-temurin:${JDK_VERSION}-jre-jammy
 
@@ -53,7 +53,7 @@ COPY --from=ant_build /dspace ${DSPACE_INSTALL}
 
 EXPOSE 8080
 
-ENV JAVA_OPTS="-Xmx2g -Xms1g -Djava.awt.headless=true"
+ENV JAVA_TOOL_OPTIONS="-Xmx2g -Xms1g -Djava.awt.headless=true -XX:-UseBASE64Intrinsics"
 
 ENTRYPOINT ["java"]
 CMD ["-jar", "webapps/server-boot.jar"]
